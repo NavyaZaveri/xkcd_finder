@@ -1,9 +1,19 @@
 import pytest
+from _pytest import unittest
+
 from es_api.client import ElasticEngine
 
 
-@pytest.fixture()
+@pytest.fixture
 def client():
-    e = ElasticEngine("test_index")
-    yield e
-    e.destroy_index("test_index")
+    yield ElasticEngine(index="test")
+
+
+def test_insertion(client):
+    c = client
+    print(c.__dict__)
+
+
+def test_deletion(client):
+    print("wtf")
+    pass
