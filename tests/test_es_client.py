@@ -6,12 +6,13 @@ from es_api.client import ElasticEngine
 
 @pytest.fixture
 def client():
-    yield ElasticEngine(index="test")
+    client = ElasticEngine(index="test")
+    yield client
+    client.destroy_documents_in_index("test")
 
 
 def test_insertion(client):
-    c = client
-    print(c.__dict__)
+    pass
 
 
 def test_deletion(client):
