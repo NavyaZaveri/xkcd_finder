@@ -36,21 +36,24 @@ class ElasticEngine:
         self._client = Elasticsearch()
         self._search = Search(using=self._client, index=index)
         self._index = Index(name=index, using=self._client)
-        self.insert({"dummy": "dummy"})
 
     def refresh(self):
         self._index.refresh()
 
     def search_all(self):
         self._search = self._search.query("match_all")
+        return self
 
-    def destroy_index(self, index):
+    def destroy_index(self, index, refresh=False):
         self._search.index(index).delete()
-        self._index.refresh()
+        if refresh:
+            self.refresh()
 
-    def destroy_documents_in_index(self, index):
+    def destroy_docs_in_current_index(self, refresh=False):
+
         self._search.query("match_all").delete()
-        self.refresh()
+        if refresh:
+            self.refresh()
 
     def search_by(self, search_type="fuzzy", **kwargs):
         self._search = self._search.query(search_type, **kwargs)
@@ -59,9 +62,11 @@ class ElasticEngine:
     def exclude(self, **kwargs):
         self._search = self._search.exclude("match", **kwargs)
 
-    def insert(self, doc):
-        self._client.index(self.index_name, doc)
-        self.refresh()
+    def insert(self, *docs, refresh=False):
+        for doc in docs:
+            self._client.index(self.index_name, doc)
+            if refresh:
+                self.refresh()
 
     def get(self):
         for match in self._search.execute():

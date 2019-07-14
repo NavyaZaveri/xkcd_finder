@@ -1,5 +1,4 @@
 import pytest
-from _pytest import unittest
 
 from es_api.client import ElasticEngine
 
@@ -8,13 +7,19 @@ from es_api.client import ElasticEngine
 def client():
     client = ElasticEngine(index="test")
     yield client
-    client.destroy_documents_in_index("test")
+    client.destroy_docs_in_current_index(refresh=True)
 
 
 def test_insertion(client):
-    pass
+    client.insert({"hell0": "world"}, refresh=True)
+    client.insert({"foo": "bar"}, refresh=True)
+    docs = [doc for doc in client.search_all().get()]
+    print(docs)
+    assert len(docs) == 2
 
 
 def test_deletion(client):
-    print("wtf")
-    pass
+    client.insert({"key1": "thing1"}, {"key2": "thing2"}, refresh=True)
+    client.destroy_docs_in_current_index(refresh=True)
+    docs = [doc for doc in client.search_all().get()]
+    assert len(docs) == 0
