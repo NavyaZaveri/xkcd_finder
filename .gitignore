@@ -2,3 +2,4 @@ venv/
 .vscode/
 .idea
 /tests/.pytest_cache/
+/es_api/.pytest_cache/
