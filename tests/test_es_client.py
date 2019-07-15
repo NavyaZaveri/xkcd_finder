@@ -72,3 +72,7 @@ def test_update(client):
     docs = [i for i in client.search_by(id=100).results()]
     assert len(docs) == 1
     assert docs[0]["content"] == "c"
+
+    client.delete_document(updated, refresh=True)
+    docs = [i for i in client.search_by(id=100).results()]
+    assert len(docs) == 0

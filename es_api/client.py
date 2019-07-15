@@ -71,10 +71,12 @@ class ElasticEngine:
         :type old: Model
         """
         docs = [d for d in self.search_by(id=old.get_id()).results()]
+
         if len(docs) > 1:
             raise ValueError("shite")
         if not docs:
             raise ValueError("no such document ")
+
         self.delete_document(old, refresh=refresh)
         self.insert(new_doc, refresh=refresh)
 
