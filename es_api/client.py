@@ -15,7 +15,7 @@ class Model(ABC):
         pass
 
     def __eq__(self, other):
-        return self.id == other.id
+        return self.get_id() == other.get_id()
 
 
 class Xkcd(Model):
@@ -23,15 +23,17 @@ class Xkcd(Model):
         self.id = id
         self.content = content
         self.link = link
+        self.neighbors = []
 
     def get_id(self):
         return self.id
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "id": self.get_id(),
             "content": self.content,
-            "link": self.link
+            "link": self.link,
+            "neighbors": self.neighbors
         }
 
 
@@ -43,6 +45,8 @@ for i in range(3):
 
 ind = Index("wtf", using=e)
 ind.refresh()
+
+x = Xkcd(10, "fjeop", "fejop")
 
 for i in s:
     print(i.to_dict())

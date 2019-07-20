@@ -22,7 +22,6 @@ def test_insertion(client):
 
 def test_deletion(client):
     """
-
     :type client: ElasticEngine
     """
     client.insert(Xkcd(20, "key1", "thing1"), Xkcd(30, "key2", "thing2"), refresh=True)
@@ -33,7 +32,6 @@ def test_deletion(client):
 
 def test_filter(client):
     """
-
     :type client: ElasticEngine
     """
     client.insert(Xkcd(100, "thing", "xyz"),

@@ -26,6 +26,7 @@ websockets = "==6.0"
 yapf = "==0.28.0"
 elasticsearch = "*"
 elasticsearch-dsl = "*"
+spacy = "*"
 
 [dev-packages]
 
