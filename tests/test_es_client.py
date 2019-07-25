@@ -1,6 +1,7 @@
 import pytest
 
-from es_api.client import ElasticEngine, Xkcd
+from es_api.client import ElasticEngine
+from xkcd import Xkcd
 
 
 @pytest.fixture
@@ -61,7 +62,6 @@ def test_update(client):
 
     :type client: ElasticEngine
     """
-
     old = Xkcd(100, "a", "b")
     updated = Xkcd(100, "c", "d")
 

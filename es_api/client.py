@@ -1,3 +1,4 @@
+import attr
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
 from abc import ABC, abstractmethod
@@ -6,35 +7,13 @@ e = Elasticsearch()
 
 
 class Model(ABC):
-
-    def to_dict(self):
-        pass
-
     @abstractmethod
-    def get_id(self):
+    def to_dict(self):
         pass
 
     def __eq__(self, other):
         return self.get_id() == other.get_id()
 
-
-class Xkcd(Model):
-    def __init__(self, id, content, link):
-        self.id = id
-        self.content = content
-        self.link = link
-        self.neighbors = []
-
-    def get_id(self):
-        return self.id
-
-    def to_dict(self):
-        return {
-            "id": self.get_id(),
-            "content": self.content,
-            "link": self.link,
-            "neighbors": self.neighbors
-        }
 
 
 e.index("wtf", {"beansie": "bneabie"})
@@ -46,15 +25,11 @@ for i in range(3):
 ind = Index("wtf", using=e)
 ind.refresh()
 
-x = Xkcd(10, "fjeop", "fejop")
-
 for i in s:
     print(i.to_dict())
 
 res = Search(using=e, index="wtf").query("match_all").delete()
 print(res)
-
-c = Xkcd("a", "v", "c")
 
 
 class ElasticEngine:
@@ -115,7 +90,6 @@ class ElasticEngine:
 
     def insert(self, *docs, **kwargs):
         """
-        :param refresh:
         :type docs: Model
         """
         refresh = kwargs.pop("refresh", False)
