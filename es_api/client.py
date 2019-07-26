@@ -1,35 +1,26 @@
-import attr
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
-from abc import ABC, abstractmethod
 
+from xkcd import Xkcd
+
+'''
 e = Elasticsearch()
-
-
-class Model(ABC):
-    @abstractmethod
-    def to_dict(self):
-        pass
-
-    def __eq__(self, other):
-        return self.get_id() == other.get_id()
-
-
 
 e.index("wtf", {"beansie": "bneabie"})
 q = {"x": "3"}
-for i in range(3):
-    e.index("wtf", q)
-    s: Search = Search(using=e, index="wtf").query("match", x=3).exclude("match", hello="world")
-
+a = Xkcd(10, "python good")
+b = Xkcd(20, "better python")
+c = Xkcd(20, "best")
+e.index("wtf", a.to_dict())
+e.index("wtf", b.to_dict())
+e.index("wtf", c.to_dict())
+s: Search = Search(using=e, index="wtf").query("match", content="good python")
 ind = Index("wtf", using=e)
-ind.refresh()
-
 for i in s:
     print(i.to_dict())
-
 res = Search(using=e, index="wtf").query("match_all").delete()
 print(res)
+'''
 
 
 class ElasticEngine:
@@ -94,7 +85,12 @@ class ElasticEngine:
         """
         refresh = kwargs.pop("refresh", False)
         for doc in docs:
-            self._client.index(self.index_name, doc.to_dict())
+            if hasattr(doc, "to_dict"):
+                json = doc.to_dict()
+            else:
+                json = doc
+
+            self._client.index(self.index_name, json)
             if refresh:
                 self.refresh()
 
