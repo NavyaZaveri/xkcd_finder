@@ -4,6 +4,8 @@ from sanic.response import json
 from es_api.client import ElasticEngine
 
 app = Sanic()
+
+# load configruration from .env configuration environment
 es_client = ElasticEngine("stuff")
 
 
@@ -14,17 +16,18 @@ async def home(request):
 
 @app.route("/insert", methods=["POST"])
 async def insert_comic(request):
-    pass
+    a = request.json
+    es_client.insert(a)
+    return json({"msg": "insertion successful"})
 
 
 @app.route("/search", methods=["GET"])
 async def search_comic(request):
-    pass
-
-
-@app.route("/recommend", methods=["GET"])
-async def recommend_comic(request):
-    pass
+    query = request.json["query"]
+    results = []
+    for match in es_client.search_by(content=query).results():
+        results.append(match)
+    return json({"results": results})
 
 
 @app.route("/random", methods=["GET"])
@@ -34,7 +37,6 @@ async def random_comic(request):
     :param request:
     :return:
     """
-    pass
 
 
 if __name__ == "__main__":

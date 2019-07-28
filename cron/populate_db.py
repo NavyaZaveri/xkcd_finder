@@ -8,10 +8,6 @@ init
 APP_ENDPOINT = "localhost:800"
 
 
-def insert_endpoint():
-    return APP_ENDPOINT + "/"
-
-
 def run(start, end):
     for comic in xkcd_scraper.scrape(0, 20):
         print(comic)
