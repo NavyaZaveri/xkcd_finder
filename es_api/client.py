@@ -3,25 +3,6 @@ from elasticsearch_dsl import Search, Index
 
 from xkcd import Xkcd
 
-'''
-e = Elasticsearch()
-
-e.index("wtf", {"beansie": "bneabie"})
-q = {"x": "3"}
-a = Xkcd(10, "python good")
-b = Xkcd(20, "better python")
-c = Xkcd(20, "best")
-e.index("wtf", a.to_dict())
-e.index("wtf", b.to_dict())
-e.index("wtf", c.to_dict())
-s: Search = Search(using=e, index="wtf").query("match", content="good python")
-ind = Index("wtf", using=e)
-for i in s:
-    print(i.to_dict())
-res = Search(using=e, index="wtf").query("match_all").delete()
-print(res)
-'''
-
 
 class ElasticEngine:
     def __init__(self, index):
@@ -90,7 +71,7 @@ class ElasticEngine:
             else:
                 json = doc
 
-            self._client.index(self.index_name, json)
+            self._client.index(self.index_name, json, id=json["id"])
             if refresh:
                 self.refresh()
 

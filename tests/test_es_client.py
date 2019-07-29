@@ -74,3 +74,11 @@ def test_update(client):
     client.delete_document(updated, refresh=True)
     docs = [i for i in client.search_by(id=100).results()]
     assert len(docs) == 0
+
+
+def test_duplicate_insertions(client: ElasticEngine):
+    a = Xkcd(content="hello")
+    b = Xkcd(content="hello")
+    client.insert(a, b, refresh=True)
+    comics = [c for c in client.search_all().results()]
+    assert len(comics) == 1
