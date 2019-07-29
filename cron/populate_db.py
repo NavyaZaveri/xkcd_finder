@@ -1,16 +1,12 @@
 from scraper import xkcd_scraper
 import requests
 
-'''
-init  
-'''
-
-APP_ENDPOINT = "localhost:800"
+APP_ENDPOINT = "http://localhost:8000/insert"
 
 
 def run(start, end):
-    for comic in xkcd_scraper.scrape(0, 20):
-        print(comic)
+    for xkcd_comic in xkcd_scraper.scrape(0, 4):
+        requests.post(APP_ENDPOINT, json=xkcd_comic.to_dict())
 
 
-run(0, 20)
+run(0, 5)

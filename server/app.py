@@ -6,7 +6,7 @@ from es_api.client import ElasticEngine
 app = Sanic()
 
 # load configruration from .env configuration environment
-es_client = ElasticEngine("stuff")
+es_client = ElasticEngine("thing")
 
 
 @app.route("/", methods=["GET"])

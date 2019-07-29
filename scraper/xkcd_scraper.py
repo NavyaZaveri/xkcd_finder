@@ -32,7 +32,6 @@ import uuid
 
 def to_xkcd(xkcd_json):
     return Xkcd(
-        id=uuid.uuid4(),
         content=xkcd_json["transcript"],
         title=xkcd_json["title"],
         link=xkcd_json["img"],
