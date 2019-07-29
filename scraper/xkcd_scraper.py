@@ -1,3 +1,4 @@
+import logging
 import re
 from json import JSONDecodeError
 
@@ -5,26 +6,32 @@ import requests
 
 from xkcd import Xkcd
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 BASE_URL = "https://xkcd.com/{}/info.0.json"
-
-
-def scrape(start, end):
-    for comic_index in range(start, end + 1):
-        comic = requests.get(BASE_URL.format(comic_index))
-        try:
-            json = comic.json()
-            json["transcript"] = _cleanup(json["transcript"])
-            yield to_xkcd(json)
-        except JSONDecodeError:
-            print("eek")
 
 
 def _cleanup(text):
     """
     :param text: xkcd comic transciprt
-    :return: cleaner version of the transcript stripped of evyerything but spaces + alphanumeric chars
+    :return: cleaner version of the transcript stripped of eyerything but spaces + alphanumeric chars
     """
     return re.sub(r'([^\s\w]|_)+', '', text).replace('\n', '')
+
+
+def scrape(start, end):
+    for comic_index in range(start, end + 1):
+        url = BASE_URL.format(comic_index)
+        comic = requests.get(url)
+        try:
+            json = comic.json()
+            json["transcript"] = _cleanup(json["transcript"])
+            yield to_xkcd(json)
+        except JSONDecodeError as e:
+            logging.info(
+                f"unable to scrape {url}: {e}"
+            )
 
 
 def to_xkcd(xkcd_json):

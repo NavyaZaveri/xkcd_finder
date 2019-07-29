@@ -2,7 +2,7 @@ import os
 
 from scraper import xkcd_scraper
 import requests
-print(os.getenv("FOO"))
+
 APP_ENDPOINT = "http://localhost:8000/insert"
 
 
@@ -11,4 +11,5 @@ def run(start, end):
         requests.post(APP_ENDPOINT, json=xkcd_comic.to_dict())
 
 
-run(0, 5)
+run(0, 3)
+run(0, 3)

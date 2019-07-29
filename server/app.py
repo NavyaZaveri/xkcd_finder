@@ -6,8 +6,7 @@ import es_api.client
 
 load_dotenv()
 
-# OR, explicitly providing path to '.env'
-from pathlib import Path  # python3 only
+from pathlib import Path
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -15,7 +14,7 @@ load_dotenv(dotenv_path=env_path)
 app = Sanic()
 
 # load configruration from .env configuration environment
-es_client = es_api.client.ElasticEngine("thing")
+es_client = es_api.client.ElasticEngine("stuff")
 
 
 @app.route("/", methods=["GET"])
