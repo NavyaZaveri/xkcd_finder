@@ -3,7 +3,6 @@ from json import JSONDecodeError
 
 import requests
 
-from es_api.client import Xkcd
 
 BASE_URL = "https://xkcd.com/{}/info.0.json"
 
@@ -25,9 +24,6 @@ def _cleanup(text):
     :return: cleaner version of the transcript stripped of evyerything but spaces + alphanumeric chars
     """
     return re.sub(r'([^\s\w]|_)+', '', text).replace('\n', '')
-
-
-import uuid
 
 
 def to_xkcd(xkcd_json):

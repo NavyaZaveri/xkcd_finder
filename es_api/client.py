@@ -1,8 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
 
-from xkcd import Xkcd
-
 
 class ElasticEngine:
     def __init__(self, index):
