@@ -1,12 +1,21 @@
+from dotenv import load_dotenv
 from sanic import Sanic
 from sanic.response import json
 
-from es_api.client import ElasticEngine
+import es_api.client
+
+load_dotenv()
+
+# OR, explicitly providing path to '.env'
+from pathlib import Path  # python3 only
+
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
 
 app = Sanic()
 
 # load configruration from .env configuration environment
-es_client = ElasticEngine("thing")
+es_client = es_api.client.ElasticEngine("thing")
 
 
 @app.route("/", methods=["GET"])

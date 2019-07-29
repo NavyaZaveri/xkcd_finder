@@ -3,6 +3,7 @@ from json import JSONDecodeError
 
 import requests
 
+from xkcd import Xkcd
 
 BASE_URL = "https://xkcd.com/{}/info.0.json"
 

@@ -1,6 +1,8 @@
+import os
+
 from scraper import xkcd_scraper
 import requests
-
+print(os.getenv("FOO"))
 APP_ENDPOINT = "http://localhost:8000/insert"
 
 

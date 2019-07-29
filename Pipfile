@@ -28,6 +28,7 @@ elasticsearch-dsl = "*"
 spacy = "*"
 requests = "*"
 attrs = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
