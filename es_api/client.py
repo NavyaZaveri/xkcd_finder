@@ -11,7 +11,7 @@ class ElasticEngine:
 
     def refresh(self):
         self._index.refresh()
-
+    
     def update(self, old, new_doc, refresh=False):
         """
 
