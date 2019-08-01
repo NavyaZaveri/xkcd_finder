@@ -58,7 +58,6 @@ async def search_comic(request):
     return json({"results": results})
 
 
-
 @app.route("/random", methods=["GET"])
 async def random_comic(request):
     """
