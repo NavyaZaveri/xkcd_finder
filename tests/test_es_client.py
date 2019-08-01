@@ -5,7 +5,7 @@ def test_insertion(client, mock_xkcd):
     """
     :type client: ElasticEngine
     """
-    client.insert(mock_xkcd)
+    client.insert(mock_xkcd, refresh=True)
     docs = [doc for doc in client.search_all().results()]
     assert len(docs) == 2
 

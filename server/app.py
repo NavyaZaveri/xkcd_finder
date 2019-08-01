@@ -61,13 +61,12 @@ async def search_comic(request):
 @app.route("/random", methods=["GET"])
 async def random_comic(request):
     """
-
     :param request:
     :return:
     """
 
 
-@app.route("/view_all", methods=["GET"])
+@app.route("/all", methods=["GET"])
 async def display_all_docs(request):
     results = [doc for doc in es_client.search_all().results()]
     return json(

@@ -29,6 +29,7 @@ spacy = "*"
 requests = "*"
 attrs = "*"
 python-dotenv = "*"
+pre-commit = "*"
 
 [dev-packages]
 
