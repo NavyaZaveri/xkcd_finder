@@ -1,9 +1,9 @@
-import dotenv
-from os import environ
 from os.path import join, dirname
 
+import dotenv
 
-class Settings(object):
+
+class Settings:
 
     def __init__(self, filename='.env'):
         envpath = join(dirname(__file__), filename)

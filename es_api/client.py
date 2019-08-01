@@ -11,7 +11,7 @@ class ElasticEngine:
 
     def refresh(self):
         self._index.refresh()
-    
+
     def update(self, old, new_doc, refresh=False):
         """
 
@@ -41,6 +41,12 @@ class ElasticEngine:
     def delete_document(self, doc, **kwargs):
         self._search.query("match", id=doc.get_id()).delete()
         refresh = kwargs.pop("refresh", False)
+        if refresh:
+            self.refresh()
+
+    def delete_document_by(self, **kwargs):
+        refresh = kwargs.pop("refresh", None)
+        self._search.query("match", **kwargs).delete()
         if refresh:
             self.refresh()
 
