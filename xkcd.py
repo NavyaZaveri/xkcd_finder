@@ -23,7 +23,6 @@ class Xkcd(Model):
     content = attr.ib(default="")
     link = attr.ib(default="")
     title = attr.ib(default="")
-    neighbors = attr.ib(default=[])
     id = attr.ib()
 
     @id.default

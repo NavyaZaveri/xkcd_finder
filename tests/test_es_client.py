@@ -7,7 +7,7 @@ def test_insertion(client, mock_xkcd):
     """
     client.insert(mock_xkcd, refresh=True)
     docs = [doc for doc in client.search_all().results()]
-    assert len(docs) == 2
+    assert len(docs) == 1
 
 
 def test_deletion(client, mock_xkcd):

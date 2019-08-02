@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from scraper import xkcd_scraper
 
 load_dotenv()
-
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
