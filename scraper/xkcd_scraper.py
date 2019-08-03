@@ -39,5 +39,4 @@ def to_xkcd(xkcd_json):
         content=xkcd_json["transcript"],
         title=xkcd_json["title"],
         link=xkcd_json["img"],
-        neighbors=[]
     )

@@ -38,7 +38,6 @@ def test_duplicate_insertions(client: ElasticEngine, mock_xkcd):
 
 def test_delete_by(client: ElasticEngine, mock_xkcd):
     client.insert(mock_xkcd, refresh=True)
-
     assert len([_ for _ in client.search_all().results()]) == 1
 
     client.delete_document_by(id=mock_xkcd.id, refresh=True)

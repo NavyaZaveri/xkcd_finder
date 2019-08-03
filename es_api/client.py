@@ -80,8 +80,8 @@ class ElasticEngine:
                 self.refresh()
 
     def results(self):
-        for match in self._search.execute():
-            yield match.to_dict()
-
-        # reset
-        self._search = Search(using=self._client, index=self.index_name)
+        try:
+            for match in self._search.execute():
+                yield match.to_dict()
+        finally:
+            self._search = Search(using=self._client, index=self.index_name)

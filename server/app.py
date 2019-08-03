@@ -12,7 +12,7 @@ app.config.from_object(Settings())
 
 # TODO: load index from dotenv
 
-es_client = ElasticEngine("stuff1")
+es_client = ElasticEngine("stuff")
 
 
 def check_request_for_authorization_status(request):
@@ -51,7 +51,7 @@ async def insert_comic(request):
 
 @app.route("/search", methods=["GET"])
 async def search_comic(request):
-    query = request.json["query"]
+    query = request.args.get("query")
     results = []
     for match in es_client.search_by(content=query).results():
         results.append(match)

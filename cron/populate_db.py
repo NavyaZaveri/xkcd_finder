@@ -13,12 +13,16 @@ load_dotenv(dotenv_path=env_path)
 APP_ENDPOINT = "http://localhost:8000/insert"
 
 
+def insert_comic(xkcd_comic):
+    requests.post(APP_ENDPOINT, json={
+        "doc": xkcd_comic.to_dict(),
+        "password": os.environ.get("PASSWORD")
+    })
+
+
 def run(start, end):
-    for xkcd_comic in xkcd_scraper.scrape(0, end):
-        requests.post(APP_ENDPOINT, json={
-            "doc": xkcd_comic.to_dict(),
-            "password": os.environ.get("PASSWORD")
-        })
+    for xkcd_comic in xkcd_scraper.scrape(start, end):
+        insert_comic(xkcd_comic)
 
 
 # handle with arg-parse
