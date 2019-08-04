@@ -1,43 +1,47 @@
 package com.myapp.xkcd_finder
 
-class Tracker<T : Comparable<T>> {
+class Tracker<T> {
     var current = -1
-    val images = mutableListOf<T>()
-    val seen = mutableListOf<T>()
+    val history = mutableListOf<T>()
 
-    fun next(): T {
-        if (current <= images.size - 2) {
-            return images[current + 1].also { current += 1 }
+    fun next(): T? {
+        if (hasNext()) {
+            return history[current + 1].also { current += 1 }
 
-        } else {
-            return images.last()
         }
+        return null
     }
 
-    fun prev(): T {
-        if (current == 0) {
-            return images[current]
+    fun prev(): T? {
+        if (hasPrev()) {
+            return history[current - 1].also { current -= 1 }
         }
-        return images[current - 1].also { current -= 1 }
-
+        return null
     }
 
-    fun current(): T {
-        return images[current]
+    private fun hasNext(): Boolean {
+        return current <= history.size - 2
     }
 
-    fun push(img: T) {
-        images.add(img)
-        current += 1
+    private fun hasPrev(): Boolean {
+        return current > 0
+    }
+
+    fun current(): T? {
+        if (current < 0) {
+            return null
+        }
+        return history[current]
     }
 
 
     fun update(items: List<T>) {
-        val prevSize = images.size
-        images.addAll(items)
-        val newSize = images.size
-        if (newSize - prevSize >= 1) {
-            current += 1
+        val prevSize = history.size
+        history.addAll(items)
+        if (history.size == prevSize) {
+            current = prevSize - 1
+        } else {
+            current = prevSize
         }
     }
 }

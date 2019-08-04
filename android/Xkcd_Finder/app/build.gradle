@@ -40,7 +40,9 @@ dependencies {
     implementation group: 'com.github.kittinunf.fuel', name: 'fuel-json', version: '2.0.0'
     // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
     // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
-    implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.5.2'
+    // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
+    implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.71828'
+
 
 }
 
