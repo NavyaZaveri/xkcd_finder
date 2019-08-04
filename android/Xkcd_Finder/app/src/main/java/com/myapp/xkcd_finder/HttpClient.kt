@@ -55,6 +55,8 @@ fun builPath(url: String, params: Parameters): String {
     for ((p, v) in params) {
         url += "$p=$v&"
     }
+
+    //remove the trailing &'
     return url.substring(0, url.lastIndex)
 }
 
