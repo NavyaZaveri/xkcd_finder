@@ -3,9 +3,7 @@ package com.myapp.xkcd_finder
 import XkcdClient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
 import android.widget.Toast
-import com.github.pwittchen.swipe.library.rx2.Swipe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     val xkcdClient = XkcdClient(this)
     val tracker = Tracker<String>()
-    val swipe = Swipe()
 
     fun displayImgFromUrl(link: String) {
         Picasso.with(this).load(link).into(imageView)
@@ -38,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         back.setOnClickListener {
             goBack()
         }
+        forward.setOnClickListener {
+            goForward()
+        }
     }
 
     private fun getUserQuery(): String {
@@ -61,9 +61,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        return super.dispatchTouchEvent(event)
-    }
 }
 
 

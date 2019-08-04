@@ -6,12 +6,11 @@ class Tracker<T : Comparable<T>> {
     val seen = mutableListOf<T>()
 
     fun next(): T {
-        return if (current <= images.size - 2) {
-            seen.add(images[current + 1])
-            images[current + 1].also { current += 1 }
+        if (current <= images.size - 2) {
+            return images[current + 1].also { current += 1 }
 
         } else {
-            images.last()
+            return images.last()
         }
     }
 
@@ -24,7 +23,6 @@ class Tracker<T : Comparable<T>> {
     }
 
     fun current(): T {
-        seen.add(images[current])
         return images[current]
     }
 
@@ -36,8 +34,7 @@ class Tracker<T : Comparable<T>> {
 
     fun update(items: List<T>) {
         val prevSize = images.size
-        val unseenItems = items.filter { it !in seen }
-        images.addAll(unseenItems)
+        images.addAll(items)
         val newSize = images.size
         if (newSize - prevSize >= 1) {
             current += 1
