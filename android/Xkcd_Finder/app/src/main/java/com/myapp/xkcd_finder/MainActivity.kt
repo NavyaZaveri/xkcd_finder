@@ -3,38 +3,41 @@ package com.myapp.xkcd_finder
 import XkcdClient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.widget.EditText
+import android.view.MotionEvent
 import android.widget.Toast
+import com.github.pwittchen.swipe.library.rx2.Swipe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    val xkcd_client = XkcdClient(this)
+    val xkcdClient = XkcdClient(this)
+    val tracker = Tracker<String>()
+    val swipe = Swipe()
+
+    fun displayImgFromUrl(link: String) {
+        Picasso.with(this).load(link).into(imageView)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         submitButton.setOnClickListener {
             val query = getUserQuery()
-            xkcd_client.search(listOf("query" to query)) { comics ->
-
-                if (comics.size == 0) {
+            xkcdClient.search(listOf("query" to query)) { comics ->
+                if (comics.isEmpty()) {
                     Toast.makeText(this, "Couldn't find any comics!", Toast.LENGTH_SHORT).show()
                 }
-
-                comics.forEach {
-                    displayImgFromUrl(it.link)
-                }
+                tracker.update(comics.map { it.link })
+                val link = tracker.current()
+                displayImgFromUrl(link)
             }
-            rerfreshTextView()
         }
-    }
 
-
-    fun displayImgFromUrl(link: String) {
-        Picasso.with(this).load(link).into(imageView)
+        back.setOnClickListener {
+            goBack()
+        }
     }
 
     private fun getUserQuery(): String {
@@ -46,22 +49,20 @@ class MainActivity : AppCompatActivity() {
         editText.setText("")
     }
 
-    private fun setCurrent(link: String) {
+    private fun goBack() {
+        val prevComicLink = tracker.prev()
+        displayImgFromUrl(prevComicLink)
 
     }
 
-    private fun getPrevious(link: String) {
+    private fun goForward() {
+        val nextComicLink = tracker.next()
+        displayImgFromUrl(nextComicLink)
 
     }
 
-    private fun getNext(link: String) {
-
-    }
-
-    private fun kaboom(v: View) {
-        val editText = findViewById<EditText>(R.id.editText)
-        val stuff = editText.text.toString()
-        println(stuff)
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        return super.dispatchTouchEvent(event)
     }
 }
 
