@@ -1,8 +1,8 @@
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.github.kittinunf.fuel.core.Parameters
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.json.FuelJson
 import com.github.kittinunf.fuel.json.responseJson
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
@@ -31,23 +31,17 @@ class XkcdClient(val main: Activity) {
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
-                        Log.i("", "whoops!")
+                        Toast.makeText(main, "Whoops! Make sure you're connected to the internet!", Toast.LENGTH_LONG)
+                            .show()
                     }
-                    is Result.Success -> runCallbackOn(result, callback)
+                    is Result.Success -> {
+                        val json = result.get().obj()
+                        Log.i("json", json.toString())
+                        val res = deserialize<T>(json.get("results").toString())
+                        main.runOnUiThread { callback(res) }
+                    }
                 }
             }
-    }
-
-    inline fun <reified T> runCallbackOn(
-        successfulResponse: Result.Success<FuelJson, *>,
-        crossinline callback: (T) -> Unit
-    ) {
-        val json = successfulResponse.get().obj()
-        Log.i("json", json.toString())
-        val res = deserialize<T>(json.get("results").toString())
-        main.runOnUiThread {
-            callback(res)
-        }
     }
 }
 
