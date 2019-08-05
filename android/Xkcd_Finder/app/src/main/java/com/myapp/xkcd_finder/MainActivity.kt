@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             displayImgFromUrl(nextComicLink)
         }
     }
+
+    private fun setComicTitle(title: String) {
+
+    }
 }
 
 

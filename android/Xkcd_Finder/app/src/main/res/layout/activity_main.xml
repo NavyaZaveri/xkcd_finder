@@ -12,7 +12,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/submitButton"
-            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="130dp"/>
+            android:layout_marginLeft="26dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="26dp"
+            app:layout_constraintStart_toEndOf="@+id/back" android:layout_marginBottom="53dp"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,29 +22,44 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/editText"
-            tools:layout_editor_absoluteY="512dp" tools:layout_editor_absoluteX="74dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="74dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="74dp"
+            android:layout_marginBottom="174dp"/>
     <ImageView
             android:src="@drawable/ic_launcher_background"
-            android:layout_width="354dp"
+            android:layout_width="0dp"
             android:layout_height="278dp"
             android:id="@+id/imageView" tools:visibility="visible"
-            tools:layout_editor_absoluteY="133dp" tools:layout_editor_absoluteX="19dp"/>
+            android:layout_marginTop="176dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="19dp"
+            android:layout_marginStart="19dp" android:layout_marginEnd="19dp" android:layout_marginRight="19dp"
+            app:layout_constraintHorizontal_bias="1.0"/>
     <Button
             android:text="back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/back"
-            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="16dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/submitButton" android:layout_marginStart="16dp"/>
     <Button
             android:text="forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/forward"
-            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="265dp"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/submitButton" android:layout_marginEnd="56dp"
+            android:layout_marginRight="56dp" app:layout_constraintEnd_toEndOf="parent"/>
     <Button
             android:text="See More Like This"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="38dp"
-            tools:layout_editor_absoluteX="104dp" android:id="@+id/button"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/button" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="38dp"
+            android:layout_marginLeft="104dp" android:layout_marginStart="104dp"/>
+    <TextView
+            android:text="Title"
+            android:layout_width="194dp"
+            android:layout_height="38dp" tools:layout_editor_absoluteY="121dp"
+            tools:layout_editor_absoluteX="99dp" android:id="@+id/textView"/>
 
 </android.support.constraint.ConstraintLayout>

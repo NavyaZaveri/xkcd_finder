@@ -14,7 +14,7 @@ APP_ENDPOINT = "http://localhost:8000/insert"
 
 
 def insert_comic(xkcd_comic):
-    requests.post(APP_ENDPOINT, json={
+    response = requests.post(APP_ENDPOINT, json={
         "doc": xkcd_comic.to_dict(),
         "password": os.environ.get("PASSWORD")
     })
@@ -26,4 +26,4 @@ def run(start, end):
 
 
 # handle with arg-parse
-run(0, 10)
+run(0, 50)

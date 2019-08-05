@@ -8,26 +8,16 @@ import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 
 
-class XkcdClient(val main: Activity) {
-    val API = "https://c7eb1043.ngrok.io"
-
-    fun get_random_comic(p: Parameters = mutableListOf(), callback: (Array<Xkcd>) -> Unit) {
-        makeRequest(API, p, callback)
-    }
-
-    fun get_all_comics(p: Parameters = mutableListOf(), callback: (Array<Xkcd>) -> Unit) {
-        makeRequest("$API/all", p, callback)
-    }
-
+class XkcdClient(private val main: Activity) {
+    private val API = "https://b5d0b252.ngrok.io"
 
     fun search(p: Parameters, callback: (Array<Xkcd>) -> Unit) {
         makeRequest("$API/search", p, callback)
     }
 
-
     private inline fun <reified T> makeRequest(url: String, p: Parameters, crossinline callback: (T) -> Unit) {
         buildPath(url, p)
-            .httpGet(mutableListOf())
+            .httpGet(p)
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
@@ -57,13 +47,11 @@ fun buildPath(url: String, params: Parameters): String {
     var url = url
     if (params.isNotEmpty()) {
         url += "?"
-
     }
+
     for ((p, v) in params) {
         url += "$p=$v&"
     }
-
-    //remove the trailing &'
     return url.substring(0, url.lastIndex)
 }
 
