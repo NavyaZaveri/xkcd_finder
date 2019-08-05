@@ -8,13 +8,11 @@
         tools:context=".MainActivity">
 
     <Button
-            android:text="Button"
+            android:text="Search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/submitButton"
-            app:layout_constraintStart_toStartOf="@+id/editText" android:layout_marginLeft="40dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/editText" android:layout_marginBottom="175dp"/>
+            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="130dp"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,33 +20,29 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/editText"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" android:layout_marginBottom="52dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/submitButton"
-            app:layout_constraintStart_toStartOf="parent"/>
+            tools:layout_editor_absoluteY="512dp" tools:layout_editor_absoluteX="74dp"/>
     <ImageView
             android:src="@drawable/ic_launcher_background"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="354dp"
+            android:layout_height="278dp"
             android:id="@+id/imageView" tools:visibility="visible"
-            android:layout_marginTop="143dp"
-            android:layout_marginBottom="75dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/editText" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="56dp"
-            android:layout_marginStart="56dp" android:layout_marginEnd="56dp" android:layout_marginRight="56dp"/>
+            tools:layout_editor_absoluteY="133dp" tools:layout_editor_absoluteX="19dp"/>
     <Button
             android:text="back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/back" app:layout_constraintTop_toTopOf="@+id/submitButton"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="5dp"
-            android:layout_marginLeft="21dp" android:layout_marginStart="21dp"/>
+            android:id="@+id/back"
+            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="16dp"/>
     <Button
             android:text="forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/forward"
-            app:layout_constraintTop_toTopOf="@+id/submitButton" android:layout_marginTop="5dp"
-            android:layout_marginEnd="55dp" android:layout_marginRight="55dp"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            tools:layout_editor_absoluteY="630dp" tools:layout_editor_absoluteX="265dp"/>
+    <Button
+            android:text="See More Like This"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="38dp"
+            tools:layout_editor_absoluteX="104dp" android:id="@+id/button"/>
 
 </android.support.constraint.ConstraintLayout>
