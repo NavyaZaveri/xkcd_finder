@@ -4,7 +4,9 @@ import XkcdClient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import com.ablanco.zoomy.Zoomy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,13 +15,20 @@ class MainActivity : AppCompatActivity() {
     val xkcdClient = XkcdClient(this)
     val tracker = Tracker<String>()
 
+
     fun displayImgFromUrl(link: String) {
         Picasso.get().load(link).into(imageView)
+    }
+
+    private fun makeZoomable(v: View) {
+        val builder = Zoomy.Builder(this).target(imageView)
+        builder.register()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        makeZoomable(imageView)
 
         submitButton.setOnClickListener {
             val query = getUserQuery()
@@ -35,13 +44,8 @@ class MainActivity : AppCompatActivity() {
                 rerfreshTextView()
             }
         }
-
-        back.setOnClickListener {
-            goBack()
-        }
-        forward.setOnClickListener {
-            goForward()
-        }
+        back.setOnClickListener { goBack() }
+        forward.setOnClickListener { goForward() }
     }
 
     private fun getUserQuery(): String {

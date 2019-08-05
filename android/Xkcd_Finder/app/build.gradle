@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.myapp.xkcd_finder"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -42,6 +42,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
     // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
     implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.71828'
+// https://mvnrepository.com/artifact/com.ablanco.zoomy/zoomy
+    implementation group: 'com.ablanco.zoomy', name: 'zoomy', version: '1.1.0'
+
+
 
 
 }
