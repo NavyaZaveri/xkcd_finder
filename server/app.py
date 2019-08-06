@@ -6,13 +6,14 @@ from sanic.response import json
 
 from es_api.client import ElasticEngine
 from settings import Settings
+from scraper.xkcd_scraper import cleanup
 
 app = Sanic()
 app.config.from_object(Settings())
 
 # TODO: load index from dotenv
 
-es_client = ElasticEngine("stuff")
+es_client = ElasticEngine("woot")
 
 
 def check_request_for_authorization_status(request):
@@ -46,14 +47,16 @@ async def home(request):
 async def insert_comic(request):
     doc = request.json["doc"]
     es_client.insert(doc)
-    return json({"msg": "insertion successful"})
+    return json({"msg": "insertion successful"},
+                status=201)
 
 
 @app.route("/search", methods=["GET"])
 async def search_comic(request):
     query = request.args.get("query")
+    clean_query = cleanup(query)
     results = []
-    for match in es_client.search_by(content=query).results():
+    for match in es_client.search_by(content=clean_query).results():
         results.append(match)
     return json({"results": results})
 

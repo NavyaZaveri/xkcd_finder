@@ -30,6 +30,8 @@ requests = "*"
 attrs = "*"
 python-dotenv = "*"
 pre-commit = "*"
+nltk = "*"
+"pysqlite3" = "*"
 
 [dev-packages]
 

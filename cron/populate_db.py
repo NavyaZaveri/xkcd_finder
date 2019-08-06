@@ -18,6 +18,8 @@ def insert_comic(xkcd_comic):
         "doc": xkcd_comic.to_dict(),
         "password": os.environ.get("PASSWORD")
     })
+    if response.status_code == 201:
+        print("created")
 
 
 def run(start, end):

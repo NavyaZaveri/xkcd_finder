@@ -8,8 +8,11 @@ import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 
 
+data class Xkcd(val id: Int, val content: String, val link: String, val title: String)
+
+
 class XkcdClient(private val main: Activity) {
-    private val API = "https://78d3cbe0.ngrok.io"
+    private val API = "https://279fbce3.ngrok.io"
 
     fun search(p: Parameters, callback: (Array<Xkcd>) -> Unit) {
         makeRequest("$API/search", p, callback)
@@ -21,8 +24,14 @@ class XkcdClient(private val main: Activity) {
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
-                        Toast.makeText(main, "Whoops! Make sure you're connected to the internet!", Toast.LENGTH_LONG)
-                            .show()
+                        Log.i("failed", "request failed")
+                        main.runOnUiThread {
+                            Toast.makeText(
+                                main,
+                                "Request Failed!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                     is Result.Success -> {
                         val json = result.get().obj()
@@ -39,16 +48,12 @@ inline fun <reified T> deserialize(content: String): T {
     return Gson().fromJson(content, T::class.java)
 }
 
-
-data class Xkcd(val id: Int, val content: String, val link: String, val title: String)
-
-
 fun buildPath(url: String, params: Parameters): String {
     var url = url
+
     if (params.isNotEmpty()) {
         url += "?"
     }
-
     for ((p, v) in params) {
         url += "$p=$v&"
     }
