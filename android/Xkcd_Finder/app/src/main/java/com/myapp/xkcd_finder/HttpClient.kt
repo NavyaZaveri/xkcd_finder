@@ -18,8 +18,6 @@ class XkcdClient(private val main: Activity) {
     private inline fun <reified T> makeRequest(url: String, p: Parameters, crossinline callback: (T) -> Unit) {
         buildPath(url, p)
             .httpGet()
-            .also { println(url) }
-
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {

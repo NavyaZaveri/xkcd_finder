@@ -13,26 +13,28 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    val xkcdClient = XkcdClient(this)
-    val tracker = Tracker<Xkcd>()
+    private val xkcdClient = XkcdClient(this)
+    private val tracker = Tracker<Xkcd>()
 
 
-    fun displayImgFromUrl(link: String) {
+    private fun displayImgFromUrl(link: String) {
         Picasso.get().load(link).fit().into(imageView)
     }
 
     private fun makeZoomable(v: View) {
-        val builder = Zoomy.Builder(this).enableImmersiveMode(false)
+        val builder = Zoomy.Builder(this)
+            .enableImmersiveMode(false)
             .animateZooming(false)
-            .target(imageView)
+            .target(v)
         builder.register()
     }
 
+    private fun makeVisible(vararg views: View) {
+        views.forEach { it.visibility = View.VISIBLE }
+    }
 
     private fun displayComic(xkcd: Xkcd) {
-        comicTitle.visibility = View.VISIBLE
-        urlDisplay.visibility = View.VISIBLE
-        recommender.visibility = View.VISIBLE
+        makeVisible(imageView, comicTitle, urlDisplay, recommender)
         displayImgFromUrl(xkcd.link)
         setComicLink(xkcd.link)
         setComicTitle(xkcd.title)
@@ -60,8 +62,6 @@ class MainActivity : AppCompatActivity() {
                 if (currentComic != null) {
                     displayComic(currentComic)
                 }
-                rerfreshTextView()
-
             }
         }
         back.setOnClickListener { goBack() }
@@ -70,9 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserQuery(): String {
         return floating_search_view.query
-    }
-
-    private fun rerfreshTextView() {
     }
 
     private fun goBack() {
