@@ -1,5 +1,6 @@
 package com.myapp.xkcd_finder
 
+import Xkcd
 import XkcdClient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -13,16 +14,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     val xkcdClient = XkcdClient(this)
-    val tracker = Tracker<String>()
+    val tracker = Tracker<Xkcd>()
 
 
     fun displayImgFromUrl(link: String) {
-        Picasso.get().load(link).into(imageView)
+        Picasso.get().load(link).fit().into(imageView)
     }
 
     private fun makeZoomable(v: View) {
-        val builder = Zoomy.Builder(this).target(imageView)
+        val builder = Zoomy.Builder(this).enableImmersiveMode(false)
+            .animateZooming(false)
+            .target(imageView)
         builder.register()
+    }
+
+
+    private fun displayComic(xkcd: Xkcd) {
+        comicTitle.visibility = View.VISIBLE
+        urlDisplay.visibility = View.VISIBLE
+        recommender.visibility = View.VISIBLE
+        displayImgFromUrl(xkcd.link)
+        setComicLink(xkcd.link)
+        setComicTitle(xkcd.title)
+    }
+
+    private fun setComicLink(link: String) {
+        urlDisplay.text = link
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,18 +47,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         makeZoomable(imageView)
 
-        submitButton.setOnClickListener {
+        submit.setOnClickListener {
+            println("clicked")
             val query = getUserQuery()
             Log.i("query", query.length.toString())
             xkcdClient.search(listOf("query" to query)) { comics ->
                 if (comics.isEmpty()) {
                     Toast.makeText(this, "Couldn't find any comics!", Toast.LENGTH_SHORT).show()
                 }
-                tracker.update(comics.map { it.link })
-                val link = tracker.current()
-                if (link != null)
-                    displayImgFromUrl(link)
+                tracker.update(comics.toList())
+                val currentComic = tracker.current()
+                if (currentComic != null) {
+                    displayComic(currentComic)
+                }
                 rerfreshTextView()
+
             }
         }
         back.setOnClickListener { goBack() }
@@ -49,31 +69,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserQuery(): String {
-        return editText.text.toString().trim()
+        return floating_search_view.query
     }
 
     private fun rerfreshTextView() {
-        editText.setText("")
     }
 
     private fun goBack() {
-        val prevComicLink = tracker.prev()
-        if (prevComicLink != null) {
-            displayImgFromUrl(prevComicLink)
+        val prevComic = tracker.prev()
+        if (prevComic != null) {
+            displayComic(prevComic)
         }
     }
 
     private fun goForward() {
-        val nextComicLink = tracker.next()
-        if (nextComicLink != null) {
-            displayImgFromUrl(nextComicLink)
+        val nextComic = tracker.next()
+        if (nextComic != null) {
+            displayComic(nextComic)
         }
     }
 
     private fun setComicTitle(title: String) {
-
+        comicTitle.text = title
     }
 }
-
-
 

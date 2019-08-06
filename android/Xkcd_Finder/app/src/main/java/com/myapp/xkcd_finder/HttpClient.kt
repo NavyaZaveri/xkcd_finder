@@ -9,7 +9,7 @@ import com.google.gson.Gson
 
 
 class XkcdClient(private val main: Activity) {
-    private val API = "https://b5d0b252.ngrok.io"
+    private val API = "https://78d3cbe0.ngrok.io"
 
     fun search(p: Parameters, callback: (Array<Xkcd>) -> Unit) {
         makeRequest("$API/search", p, callback)
@@ -17,7 +17,9 @@ class XkcdClient(private val main: Activity) {
 
     private inline fun <reified T> makeRequest(url: String, p: Parameters, crossinline callback: (T) -> Unit) {
         buildPath(url, p)
-            .httpGet(p)
+            .httpGet()
+            .also { println(url) }
+
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
