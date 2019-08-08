@@ -42,6 +42,7 @@ jobs:
       - run:
           name: run tests
           command: |
+          echo "tests"
 
       - store_artifacts:
           path: test-reports
