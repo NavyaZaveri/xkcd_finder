@@ -11,21 +11,21 @@ import com.ablanco.zoomy.Zoomy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
     private val xkcdClient = XkcdClient(this)
     private val tracker = Tracker<Xkcd>()
 
 
     private fun displayImgFromUrl(link: String) {
-        Picasso.get().load(link).fit().into(imageView)
+        Picasso.get().load(link).fit().into(comicImg)
     }
 
     private fun makeZoomable(v: View) {
         val builder = Zoomy.Builder(this)
+            .target(v)
             .enableImmersiveMode(false)
             .animateZooming(false)
-            .target(v)
+
         builder.register()
     }
 
@@ -34,20 +34,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayComic(xkcd: Xkcd) {
-        makeVisible(imageView, comicTitle, urlDisplay, recommender)
+        makeVisible(comicImg, comicTitle, comicUrl, recommender)
         displayImgFromUrl(xkcd.link)
-        setComicLink(xkcd.link)
-        setComicTitle(xkcd.title)
-    }
-
-    private fun setComicLink(link: String) {
-        urlDisplay.text = link
+        comicUrl.text = xkcd.link
+        comicTitle.text = xkcd.title
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        makeZoomable(imageView)
+        makeZoomable(comicImg)
 
         submit.setOnClickListener {
             println("clicked")
@@ -84,10 +80,6 @@ class MainActivity : AppCompatActivity() {
         if (nextComic != null) {
             displayComic(nextComic)
         }
-    }
-
-    private fun setComicTitle(title: String) {
-        comicTitle.text = title
     }
 }
 

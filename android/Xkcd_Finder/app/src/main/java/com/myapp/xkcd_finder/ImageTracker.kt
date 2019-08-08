@@ -1,8 +1,8 @@
 package com.myapp.xkcd_finder
 
 class Tracker<T> {
-    var current = -1
-    val history = mutableListOf<T>()
+    private var current = -1
+    private val history = mutableListOf<T>()
 
     fun next(): T? {
         if (hasNext()) {

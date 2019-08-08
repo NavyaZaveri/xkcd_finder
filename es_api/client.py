@@ -3,9 +3,9 @@ from elasticsearch_dsl import Search, Index
 
 
 class ElasticEngine:
-    def __init__(self, index):
+    def __init__(self, index, host='localhost'):
         self.index_name = index
-        self._client = Elasticsearch()
+        self._client = Elasticsearch(hosts=[host])
         self._search = Search(using=self._client, index=index)
         self._index = Index(name=index, using=self._client)
 
@@ -22,9 +22,9 @@ class ElasticEngine:
         docs = [d for d in self.search_by(id=old.get_id()).results()]
 
         if len(docs) > 1:
-            raise ValueError("shite")
+            raise ValueError(f"Duplicates for {old} found ")
         if not docs:
-            raise ValueError("no such document ")
+            raise ValueError(f"no such document {old}")
 
         self.delete_document(old, refresh=refresh)
         self.insert(new_doc, refresh=refresh)

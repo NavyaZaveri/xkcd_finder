@@ -2,18 +2,17 @@ import logging
 import re
 from json import JSONDecodeError
 
-import requests
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
 
+import requests
 from xkcd import Xkcd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://xkcd.com/{}/info.0.json"
-from nltk.corpus import stopwords
-from nltk.stem.wordnet import WordNetLemmatizer
-
-stopwords = set(stopwords.words("english"))
+STOPOWRDS = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
 
@@ -23,7 +22,7 @@ def cleanup(text):
     :return: cleaner version of the transcript stripped of eyerything but spaces + alphanumeric chars
     """
     words = re.sub(r'([^\s\w]|_)+', '', text).replace('\n', '').split(" ")
-    words_without_stopwords = [w.lower() for w in words if w not in stopwords]
+    words_without_stopwords = [w.lower() for w in words if w not in STOPOWRDS]
     lemmatized = [lemmatizer.lemmatize(w) for w in words_without_stopwords]
     return " ".join(lemmatized)
 
