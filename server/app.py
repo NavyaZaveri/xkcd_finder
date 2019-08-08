@@ -13,7 +13,7 @@ app.config.from_object(Settings())
 
 # TODO: load index from dotenv
 
-es_client = ElasticEngine("woot")
+es_client = ElasticEngine(index="woot", hosts=["localhost"])
 
 
 def check_request_for_authorization_status(request):

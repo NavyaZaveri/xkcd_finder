@@ -1,13 +1,15 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
+from bonsai import setup
 
 
 class ElasticEngine:
-    def __init__(self, index, host='localhost'):
+    def __init__(self, index, **kwargs):
         self.index_name = index
-        self._client = Elasticsearch(hosts=[host])
+        self._client = Elasticsearch(**kwargs)
         self._search = Search(using=self._client, index=index)
         self._index = Index(name=index, using=self._client)
+        self.create_index(index)
 
     def refresh(self):
         self._index.refresh()
@@ -85,3 +87,24 @@ class ElasticEngine:
                 yield match.to_dict()
         finally:
             self._search = Search(using=self._client, index=self.index_name)
+
+    @classmethod
+    def from_bonsai(cls, index, test_instance=True):
+        if test_instance:
+            header = setup.get_test_es_config()
+            return cls(
+                index=index,
+                hosts=header,
+            )
+
+    def ping(self):
+        return self._client.ping()
+
+    def create_index(self, name):
+        if not self._client.indices.exists(index=name):
+            self._client.indices.create(index=name)
+        self.refresh()
+
+    def delete_index(self, name):
+        if self._client.indices.exists(index=name):
+            self._client.indices.delete(index=name)

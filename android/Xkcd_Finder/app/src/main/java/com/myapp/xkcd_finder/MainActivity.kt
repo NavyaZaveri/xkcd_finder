@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun goForward() {
         val nextComic = tracker.next()
         if (nextComic != null) {

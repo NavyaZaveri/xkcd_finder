@@ -42,3 +42,7 @@ def test_delete_by(client: ElasticEngine, mock_xkcd):
 
     client.delete_document_by(id=mock_xkcd.id, refresh=True)
     assert len([_ for _ in client.search_all().results()]) == 0
+
+
+def test_health_check(client: ElasticEngine):
+    assert client.ping()

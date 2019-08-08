@@ -13,6 +13,6 @@ def mock_xkcd():
 
 @pytest.fixture
 def client():
-    client = ElasticEngine(index="test")
+    client = ElasticEngine.from_bonsai("test", test_instance=True)
     yield client
-    client.destroy_docs_in_current_index(refresh=True)
+    client.delete_index("test")
