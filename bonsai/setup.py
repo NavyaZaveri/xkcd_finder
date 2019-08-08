@@ -1,16 +1,15 @@
 import os
 import re
-from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+env_path = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=env_path,verbose=True)
 
 
 def _get_header(url):
-    bonsai_url = 'https://366jcemnlk:t72d4o8zqy@xkcd-app-6996876562.ap-southeast-2.bonsaisearch.net'
+    bonsai_url = os.environ[url]
     auth = re.search('https\:\/\/(.*)\@', bonsai_url).group(1).split(':')
     host = bonsai_url.replace('https://%s:%s@' % (auth[0], auth[1]), '')
     return [{
