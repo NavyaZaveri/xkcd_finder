@@ -1,2 +1,2 @@
 # xkcd_recommender
-[![CircleCI](https://circleci.com/gh/NavyaZaveri/xkcd_recommender.svg?style=svg)](https://circleci.com/gh/NavyaZaveri/xkcd_recommender)
+[![CircleCI](https://circleci.com/gh/NavyaZaveri/xkcd_recommender.svg?style=svg&circle-token=b801f72a1366a53ce8b2c5c200d8e8d96fabc6ca)](https://circleci.com/gh/NavyaZaveri/xkcd_recommender)
