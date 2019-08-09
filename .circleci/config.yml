@@ -16,8 +16,6 @@ jobs:
       # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
-    environment:
-      BONSAI_TEST_URL: https://366jcemnlk:t72d4o8zqy@xkcd-app-6996876562.ap-southeast-2.bonsaisearch.net
 
     steps:
       - checkout
