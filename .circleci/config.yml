@@ -24,7 +24,7 @@ jobs:
 
 
       - save_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: v1-python-requirements-{{ checksum "requirements.txt" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
