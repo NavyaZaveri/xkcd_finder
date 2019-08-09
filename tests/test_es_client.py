@@ -1,29 +1,20 @@
 from es_api.client import ElasticEngine
 
 
-def test_insertion(client, mock_xkcd):
-    """
-    :type client: ElasticEngine
-    """
+def test_insertion(client: ElasticEngine, mock_xkcd):
     client.insert(mock_xkcd, refresh=True)
     docs = [doc for doc in client.search_all().results()]
     assert len(docs) == 1
 
 
-def test_deletion(client, mock_xkcd):
-    """
-    :type client: ElasticEngine
-    """
+def test_deletion(client: ElasticEngine, mock_xkcd):
     client.insert(mock_xkcd, refresh=True)
     client.destroy_docs_in_current_index(refresh=True)
     docs = [doc for doc in client.search_all().results()]
     assert len(docs) == 0
 
 
-def test_filter(client, mock_xkcd):
-    """
-    :type client: ElasticEngine
-    """
+def test_filter(client: ElasticEngine, mock_xkcd):
     client.insert(mock_xkcd,
                   refresh=True)
     docs = [d for d in client.search_by(content=mock_xkcd.content).exclude(id=mock_xkcd.id).results()]

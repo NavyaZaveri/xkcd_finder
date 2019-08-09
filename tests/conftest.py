@@ -7,7 +7,9 @@ from xkcd import Xkcd
 @pytest.fixture
 def mock_xkcd():
     return Xkcd(
-        content="foo"
+        content="foo",
+        link="https://foo.com",
+        title="bar"
     )
 
 

@@ -20,9 +20,9 @@ class Model(ABC):
 
 @attr.s(slots=True)
 class Xkcd(Model):
-    content = attr.ib(default="")
-    link = attr.ib(default="")
-    title = attr.ib(default="")
+    content = attr.ib()
+    link = attr.ib()
+    title = attr.ib()
     id = attr.ib()
 
     @id.default
