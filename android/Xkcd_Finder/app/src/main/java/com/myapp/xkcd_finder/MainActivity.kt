@@ -4,7 +4,6 @@ import Xkcd
 import XkcdClient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.ablanco.zoomy.Zoomy
@@ -46,9 +45,7 @@ class MainActivity : AppCompatActivity() {
         makeZoomable(comicImg)
 
         submit.setOnClickListener {
-            println("clicked")
             val query = getUserQuery()
-            Log.i("query", query.length.toString())
             xkcdClient.search(listOf("query" to query)) { comics ->
                 if (comics.isEmpty()) {
                     Toast.makeText(this, "Couldn't find any comics!", Toast.LENGTH_SHORT).show()
@@ -62,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
         back.setOnClickListener { goBack() }
         forward.setOnClickListener { goForward() }
+        xkcdClient.random(this::displayComic)
     }
 
     private fun getUserQuery(): String {

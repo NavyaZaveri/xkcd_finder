@@ -63,10 +63,10 @@ async def search_comic(request):
 
 @app.route("/random", methods=["GET"])
 async def random_comic(request):
-    """
-    :param request:
-    :return:
-    """
+    doc = es_client.get_random_doc()
+    return json({
+        "results": doc
+    })
 
 
 @app.route("/all", methods=["GET"])

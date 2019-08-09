@@ -1,3 +1,4 @@
+import random
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
 from bonsai import setup
@@ -108,3 +109,7 @@ class ElasticEngine:
     def delete_index(self, name):
         if self._client.indices.exists(index=name):
             self._client.indices.delete(index=name)
+
+    def get_random_doc(self):
+        all_docs = [_ for _ in self.search_all().results()]
+        return random.choice(all_docs)

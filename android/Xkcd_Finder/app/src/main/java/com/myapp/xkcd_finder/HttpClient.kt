@@ -18,17 +18,21 @@ class XkcdClient(private val main: Activity) {
         makeRequest("$API/search", p, callback)
     }
 
+    fun random(callback: (Xkcd) -> Unit) {
+        makeRequest("$API/random", mutableListOf(), callback)
+    }
+
+
     private inline fun <reified T> makeRequest(url: String, p: Parameters, crossinline callback: (T) -> Unit) {
         buildPath(url, p)
             .httpGet()
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
-                        Log.i("failed", "request failed")
                         main.runOnUiThread {
                             Toast.makeText(
                                 main,
-                                "Request Failed!",
+                                "Request Failed! " + result.error,
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -48,8 +52,14 @@ inline fun <reified T> deserialize(content: String): T {
     return Gson().fromJson(content, T::class.java)
 }
 
+/*
+Hacky solution used a drop-in replacement until https://github.com/kittinunf/fuel/issues/666 is fixed
+ */
 fun buildPath(url: String, params: Parameters): String {
     var url = url
+    if (params.isEmpty()) {
+        return url
+    }
 
     if (params.isNotEmpty()) {
         url += "?"
