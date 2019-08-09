@@ -12,7 +12,7 @@ data class Xkcd(val id: Int, val content: String, val link: String, val title: S
 
 
 class XkcdClient(private val main: Activity) {
-    private val API = "https://34379f3f.ngrok.io"
+    private val API = "https://0602b0a7.ngrok.io"
 
     fun search(p: Parameters, callback: (Array<Xkcd>) -> Unit) {
         makeRequest("$API/search", p, callback)
