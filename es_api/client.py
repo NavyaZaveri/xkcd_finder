@@ -24,7 +24,7 @@ class ElasticEngine:
         docs = [d for d in self.search_by(id=old.get_id()).results()]
 
         if len(docs) > 1:
-            raise ValueError(f"Duplicates for {old} found ")
+            raise ValueError(f"Duplicates for {old} found")
         if not docs:
             raise ValueError(f"no such document {old}")
 
@@ -91,7 +91,7 @@ class ElasticEngine:
     @classmethod
     def from_bonsai(cls, index, test_instance=True):
         if test_instance:
-            header = setup.get_test_es_config()
+            header = setup.get_test_es_config() if test_instance else setup.get_production_es_config()
             return cls(
                 index=index,
                 hosts=header,
