@@ -11,8 +11,6 @@ from scraper.xkcd_scraper import cleanup
 app = Sanic()
 app.config.from_object(Settings())
 
-# TODO: load index from dotenv
-
 es_client = ElasticEngine(index="woot", hosts=["localhost"])
 
 
@@ -73,7 +71,7 @@ async def random_comic(request):
 async def display_all_docs(request):
     results = [doc for doc in es_client.search_all().results()]
     return json(
-        {"result": results}
+        {"results": results}
     )
 
 

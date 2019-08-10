@@ -9,14 +9,14 @@
 
     <ImageView
             android:src="@drawable/ic_launcher_background"
-            android:layout_width="399dp"
-            android:layout_height="199dp"
+            android:layout_width="0dp"
+            android:layout_height="215dp"
             android:id="@+id/comicImg" android:visibility="invisible"
-            android:layout_marginTop="76dp"
-            android:layout_marginBottom="77dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="79dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/comicUrl" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="42dp" app:layout_constraintBottom_toBottomOf="@+id/recommender"
-            android:layout_marginStart="42dp" android:layout_marginEnd="42dp" android:layout_marginRight="42dp"/>
+            android:layout_marginLeft="5dp" app:layout_constraintBottom_toBottomOf="@+id/randomComicButton"
+            android:layout_marginStart="5dp" android:layout_marginEnd="5dp" android:layout_marginRight="5dp"/>
     <Button
             android:text="back"
             android:layout_width="wrap_content"
@@ -34,13 +34,14 @@
             android:layout_marginRight="38dp" android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"/>
     <Button
-            android:text="See More Like This"
+            android:text="Random"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/recommender"
+            android:id="@+id/randomComicButton"
             android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="197dp"/>
+            app:layout_constraintStart_toStartOf="@+id/floating_search_view" android:layout_marginLeft="85dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="85dp"
+            android:layout_marginBottom="197dp"/>
     <TextView
             android:text="https://www.google.com"
             android:layout_width="0dp"
@@ -64,7 +65,7 @@
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             android:layout_marginTop="66dp"
             android:layout_marginBottom="55dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/back" app:layout_constraintTop_toTopOf="@+id/recommender"
+            app:layout_constraintBottom_toTopOf="@+id/back" app:layout_constraintTop_toTopOf="@+id/randomComicButton"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="59dp"
             android:layout_marginStart="59dp" android:layout_marginEnd="59dp" android:layout_marginRight="59dp"/>
     <Button
@@ -72,10 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/submit"
-            android:layout_marginBottom="16dp" app:layout_constraintEnd_toEndOf="@+id/comicImg"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="140dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="140dp"
-            android:layout_marginEnd="141dp" android:layout_marginRight="141dp"/>
+            app:layout_constraintStart_toStartOf="@+id/randomComicButton"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/randomComicButton"/>
     <TextView
             android:text="TextView"
             android:layout_width="0dp"

@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayComic(xkcd: Xkcd) {
-        makeVisible(comicImg, comicTitle, comicUrl, recommender)
+        makeVisible(comicImg, comicTitle, comicUrl, randomComicButton)
         displayImgFromUrl(xkcd.link)
         comicUrl.text = xkcd.link
         comicTitle.text = xkcd.title
@@ -59,7 +59,14 @@ class MainActivity : AppCompatActivity() {
         }
         back.setOnClickListener { goBack() }
         forward.setOnClickListener { goForward() }
-        xkcdClient.random(this::displayComic)
+
+        xkcdClient.random { tracker.update(listOf(it)); displayComic(it) }
+
+        randomComicButton.setOnClickListener {
+            xkcdClient.random { xkcd ->
+                tracker.update(listOf(xkcd)); displayComic(xkcd)
+            }
+        }
     }
 
     private fun getUserQuery(): String {
