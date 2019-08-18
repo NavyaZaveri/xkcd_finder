@@ -17,7 +17,7 @@ class Model(ABC):
         return self.get_id() == other.get_id()
 
 
-@attr.s(slots=True)
+@attr.s(slots=True, frozen=True)
 class Xkcd(Model):
     content = attr.ib()
     link = attr.ib()
