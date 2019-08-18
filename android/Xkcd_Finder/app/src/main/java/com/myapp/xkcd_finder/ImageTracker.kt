@@ -19,12 +19,12 @@ class Tracker<T> {
         return null
     }
 
-    private fun hasNext(): Boolean {
-        return current <= history.size - 2
-    }
-
     private fun hasPrev(): Boolean {
         return current > 0
+    }
+
+    private fun hasNext(): Boolean {
+        return current <= history.size - 2
     }
 
     fun current(): T? {

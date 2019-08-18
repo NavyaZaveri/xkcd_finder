@@ -25,6 +25,7 @@ android {
 }
 apply plugin: 'kotlin-kapt'
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -45,8 +46,9 @@ dependencies {
     implementation group: 'com.ablanco.zoomy', name: 'zoomy', version: '1.1.0'
 
     implementation group: 'com.github.arimorty', name: 'floatingsearchview', version: '2.1.1'
-
-
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation group: 'com.google.guava', name: 'guava', version: '28.0-android'
 }
 
 

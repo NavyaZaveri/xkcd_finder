@@ -1,6 +1,5 @@
 import hashlib
 from abc import ABC, abstractmethod
-
 import attr
 
 

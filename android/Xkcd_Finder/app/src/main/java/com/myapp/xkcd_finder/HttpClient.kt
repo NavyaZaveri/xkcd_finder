@@ -12,14 +12,11 @@ data class Xkcd(val id: Int, val content: String, val link: String, val title: S
 
 
 class XkcdClient(private val main: Activity) {
-    private val API = "https://0602b0a7.ngrok.io"
+    private val API = "https://79fe3009.ngrok.io"
 
-    fun search(p: Parameters, callback: (Array<Xkcd>) -> Unit) {
+
+    fun search(p: Parameters, callback: (List<Xkcd>) -> Unit) {
         makeRequest("$API/search", p, callback)
-    }
-
-    fun random(callback: (Xkcd) -> Unit) {
-        makeRequest("$API/random", mutableListOf(), callback)
     }
 
 
@@ -30,11 +27,7 @@ class XkcdClient(private val main: Activity) {
                 when (result) {
                     is Result.Failure -> {
                         main.runOnUiThread {
-                            Toast.makeText(
-                                main,
-                                "Request Failed! " + result.error,
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(main, "Oops, something went wrong!", Toast.LENGTH_LONG).show()
                         }
                     }
                     is Result.Success -> {
@@ -46,16 +39,23 @@ class XkcdClient(private val main: Activity) {
                 }
             }
     }
+
+
+    fun random(callback: (Xkcd) -> Unit) {
+        makeRequest("$API/random", mutableListOf(), callback)
+    }
 }
 
-inline fun <reified T> deserialize(content: String): T {
+
+private inline fun <reified T> deserialize(content: String): T {
     return Gson().fromJson(content, T::class.java)
 }
 
+
 /*
-Hacky solution used a drop-in replacement until https://github.com/kittinunf/fuel/issues/666 is fixed
+Hacky solution used as a drop-in replacement until https://github.com/kittinunf/fuel/issues/666 is fixed
  */
-fun buildPath(url: String, params: Parameters): String {
+private fun buildPath(url: String, params: Parameters): String {
     var url = url
     if (params.isEmpty()) {
         return url

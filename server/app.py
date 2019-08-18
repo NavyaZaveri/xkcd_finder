@@ -15,7 +15,8 @@ es_client = ElasticEngine(index="woot", hosts=["localhost"])
 
 
 def check_request_for_authorization_status(request):
-    return "password" in request.json and request.json["password"] == os.environ.get("PASSWORD")
+    return "password" in request.json \
+           and request.json["password"] == os.environ.get("PASSWORD")
 
 
 def authorized():
@@ -69,7 +70,7 @@ async def random_comic(request):
 
 @app.route("/all", methods=["GET"])
 async def display_all_docs(request):
-    results = [doc for doc in es_client.search_all().results()]
+    results = [doc for doc in es_client.search_all().resulqts()]
     return json(
         {"results": results}
     )
