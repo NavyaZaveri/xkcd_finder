@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
 import requests
-from xkcd import Xkcd
+from models.xkcd import Xkcd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -17,10 +17,6 @@ lemmatizer = WordNetLemmatizer()
 
 
 def cleanup(text):
-    """
-    :param text: xkcd comic transciprt
-    :return: cleaner version of the transcript stripped of eyerything but spaces + alphanumeric chars
-    """
     words = re.sub(r'([^\s\w]|_)+', '', text).replace('\n', '').split(" ")
     words_without_stopwords = [w.lower() for w in words if w not in STOPOWRDS]
     lemmatized = [lemmatizer.lemmatize(w) for w in words_without_stopwords]

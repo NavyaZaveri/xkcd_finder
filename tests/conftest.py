@@ -1,7 +1,7 @@
 import pytest
 
 from es_api.client import ElasticEngine
-from xkcd import Xkcd
+from models.xkcd import Xkcd
 
 
 @pytest.fixture
