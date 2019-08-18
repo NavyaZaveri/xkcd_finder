@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         makeZoomable(comicImg)
 
         submit.setOnClickListener {
-            val query = getUserQuery()
+            val query = getSearchQuery()
             xkcdClient.search(listOf("query" to query)) { comics ->
                 if (comics.isEmpty()) {
                     Toast.makeText(this, "Couldn't find any comics!", Toast.LENGTH_SHORT).show()
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserQuery(): String {
+    private fun getSearchQuery(): String {
         return floating_search_view.query
     }
 

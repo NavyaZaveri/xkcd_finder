@@ -28,4 +28,4 @@ def run(start, end):
 
 
 # handle with arg-parse
-run(0, 200)
+run(0, 1000)

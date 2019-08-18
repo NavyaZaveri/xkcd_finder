@@ -10,13 +10,13 @@
     <ImageView
             android:src="@drawable/ic_launcher_background"
             android:layout_width="0dp"
-            android:layout_height="215dp"
+            android:layout_height="0dp"
             android:id="@+id/comicImg" android:visibility="invisible"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="79dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="67dp"
+            android:layout_marginBottom="64dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/comicUrl" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="5dp" app:layout_constraintBottom_toBottomOf="@+id/randomComicButton"
-            android:layout_marginStart="5dp" android:layout_marginEnd="5dp" android:layout_marginRight="5dp"/>
+            android:layout_marginLeft="4dp" app:layout_constraintBottom_toBottomOf="@+id/randomComicButton"
+            android:layout_marginStart="4dp" android:layout_marginEnd="4dp" android:layout_marginRight="4dp"/>
     <Button
             android:text="back"
             android:layout_width="wrap_content"
@@ -39,9 +39,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/randomComicButton"
             android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="@+id/floating_search_view" android:layout_marginLeft="85dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="85dp"
-            android:layout_marginBottom="197dp"/>
+            app:layout_constraintEnd_toEndOf="@+id/forward" android:layout_marginBottom="197dp"
+            app:layout_constraintStart_toStartOf="@+id/comicImg" android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="141dp" android:layout_marginRight="141dp"/>
     <TextView
             android:text="https://www.google.com"
             android:layout_width="0dp"
@@ -50,10 +51,10 @@
             android:linksClickable="true"
             android:id="@+id/comicUrl"
             android:visibility="invisible"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="126dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" android:layout_marginEnd="32dp" android:layout_marginRight="32dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp" android:layout_marginEnd="26dp" android:layout_marginRight="26dp"/>
     <com.arlib.floatingsearchview.FloatingSearchView
             android:id="@+id/floating_search_view"
             android:layout_width="0dp"
@@ -84,9 +85,9 @@
             android:textSize="25dp" android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:gravity="center"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="25dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/comicUrl" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" android:layout_marginEnd="32dp" android:layout_marginRight="32dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp" android:layout_marginEnd="26dp" android:layout_marginRight="26dp"/>
 
 </android.support.constraint.ConstraintLayout>

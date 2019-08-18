@@ -12,12 +12,11 @@ class ElasticEngine:
         self._index = Index(name=index, using=self._client)
         self.create_index(index)
 
-    def refresh(self):
-        self._index.refresh()
+    def __getattr__(self, attr):
+        return getattr(self._index, attr)
 
     def update(self, old, new_doc, refresh=False):
         """
-
         :param new_doc: Model
         :param refresh:
         :type old: Model
