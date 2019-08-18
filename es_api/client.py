@@ -90,12 +90,11 @@ class ElasticEngine:
 
     @classmethod
     def from_bonsai(cls, index, test_instance=True):
-        if test_instance:
-            header = setup.get_test_es_config() if test_instance else setup.get_production_es_config()
-            return cls(
-                index=index,
-                hosts=header,
-            )
+        header = setup.get_test_es_config() if test_instance else setup.get_production_es_config()
+        return cls(
+            index=index,
+            hosts=header,
+        )
 
     def ping(self):
         return self._client.ping()

@@ -11,7 +11,7 @@ from scraper.xkcd_scraper import cleanup
 app = Sanic()
 app.config.from_object(Settings())
 
-es_client = ElasticEngine(index="woot", hosts=["localhost"])
+es_client = ElasticEngine.from_bonsai(index="xkcd_production", test_instance=False)
 
 
 def check_request_for_authorization_status(request):
