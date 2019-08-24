@@ -15,6 +15,9 @@ class ElasticEngine:
     def __getattr__(self, attr):
         return getattr(self._index, attr)
 
+    def refresh(self):
+        self._index.refresh()
+
     def update(self, old, new_doc, refresh=False):
         """
         :param new_doc: Model
@@ -81,10 +84,16 @@ class ElasticEngine:
             if refresh:
                 self.refresh()
 
-    def results(self):
+    def lazy_results(self):
         try:
             for match in self._search.execute():
                 yield match.to_dict()
+        finally:
+            self._search = Search(using=self._client, index=self.index_name)
+
+    def results(self):
+        try:
+            return [doc.to_dict() for doc in self._search.execute()]
         finally:
             self._search = Search(using=self._client, index=self.index_name)
 

@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeZoomable(v: View) {
         val builder = Zoomy.Builder(this)
-            .target(v)
-            .enableImmersiveMode(false)
-            .animateZooming(false)
+                .target(v)
+                .enableImmersiveMode(false)
+                .animateZooming(false)
 
         builder.register()
     }

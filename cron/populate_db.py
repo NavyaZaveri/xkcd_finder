@@ -3,8 +3,8 @@ from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
-
 from scraper import xkcd_scraper
+import logging
 
 load_dotenv()
 env_path = Path('.') / '.env'
@@ -19,7 +19,7 @@ def insert_comic(xkcd_comic):
         "password": os.environ.get("PASSWORD")
     })
     if response.status_code == 201:
-        print("created")
+        logging.info(f"Successfully inserted {xkcd_comic.title} into db")
 
 
 def run(start, end):

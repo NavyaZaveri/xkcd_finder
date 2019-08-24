@@ -54,9 +54,7 @@ async def insert_comic(request):
 async def search_comic(request):
     query = request.args.get("query")
     clean_query = cleanup(query)
-    results = []
-    for match in es_client.search_by(content=clean_query).results():
-        results.append(match)
+    results = es_client.search_by(content=clean_query).results()
     return json({"results": results})
 
 
@@ -70,7 +68,7 @@ async def random_comic(request):
 
 @app.route("/all", methods=["GET"])
 async def display_all_docs(request):
-    results = [doc for doc in es_client.search_all().results()]
+    results = es_client.search_all().results()
     return json(
         {"results": results}
     )
