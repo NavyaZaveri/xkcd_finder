@@ -15,9 +15,6 @@ class ElasticEngine:
     def __getattr__(self, attr):
         return getattr(self._index, attr)
 
-    def refresh(self):
-        self._index.refresh()
-
     def update(self, old, new_doc, refresh=False):
         """
         :param new_doc: Model

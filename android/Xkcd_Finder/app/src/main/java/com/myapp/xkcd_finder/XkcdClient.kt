@@ -19,15 +19,19 @@ class XkcdClient(private val main: Activity) {
         makeRequest("$API/search", p, callback)
     }
 
-
-    private inline fun <reified T> makeRequest(url: String, p: Parameters, crossinline callback: (T) -> Unit) {
+    private inline fun <reified T> makeRequest(
+        url: String,
+        p: Parameters,
+        crossinline callback: (T) -> Unit
+    ) {
         buildPath(url, p)
             .httpGet()
             .responseJson { _, _, result ->
                 when (result) {
                     is Result.Failure -> {
                         main.runOnUiThread {
-                            Toast.makeText(main, "Oops, something went wrong!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(main, "Oops, something went wrong!", Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                     is Result.Success -> {
