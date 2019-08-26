@@ -16,7 +16,7 @@ def test_authorized_doc_insertion(server, mock_xkcd):
     assert response.status_code == 201
 
 
-def test_expected_json_format(server, mock_xkcd):
+def test_end_to_end_flow(server, mock_xkcd):
     _, response = server.post("/insert", json={
         "doc": mock_xkcd.to_dict(),
         "password": os.environ["PASSWORD"]
