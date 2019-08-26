@@ -5,6 +5,7 @@ import pytest
 from es_api.client import ElasticEngine
 from models.xkcd import Xkcd
 from server.app import app
+from settings import Settings
 
 
 @pytest.fixture
@@ -25,8 +26,8 @@ def client():
 
 @pytest.fixture
 def server(client):
-    app.config.es_client = client
-    return app.test_client
+    app.config.from_object(Settings(client=client))
+    yield app.test_client
 
 
 @pytest.fixture

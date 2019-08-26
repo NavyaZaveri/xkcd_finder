@@ -5,8 +5,8 @@ from sanic import Sanic
 from sanic.response import json
 
 from es_api.client import ElasticEngine
-from settings import Settings
 from scraper.xkcd_scraper import cleanup
+from settings import Settings
 
 app = Sanic()
 
@@ -43,7 +43,7 @@ async def home(request):
 @authorized()
 async def insert_comic(request):
     doc = request.json["doc"]
-    app.config.es_client.insert(doc)
+    app.config.ES_CLIENT.insert(doc)
     return json({"msg": "insertion successful"},
                 status=201)
 
@@ -52,13 +52,13 @@ async def insert_comic(request):
 async def search_comic(request):
     query = request.args.get("query")
     clean_query = cleanup(query)
-    results = app.config.es_client.search_by(content=clean_query).results()
+    results = app.config.ES_CLIENT.search_by(content=clean_query).results()
     return json({"results": results})
 
 
 @app.route("/random", methods=["GET"])
 async def random_comic(request):
-    doc = app.config.es_client.get_random_doc()
+    doc = app.config.ES_CLIENT.get_random_doc()
     return json({
         "results": doc
     })
@@ -66,7 +66,7 @@ async def random_comic(request):
 
 @app.route("/all", methods=["GET"])
 async def display_all_docs(request):
-    results = app.config.es_client.search_all().results()
+    results = app.config.ES_CLIENT.search_all().results()
     return json(
         {"results": results}
     )
@@ -76,13 +76,14 @@ async def display_all_docs(request):
 @authorized()
 async def delete_document(request):
     doc_to_delete = request.json["doc"]
-    app.config.es_client.delete_document_by(id=doc_to_delete["id"])
+    app.config.ES_CLIENT.delete_document_by(id=doc_to_delete["id"])
     return json({
         "result": "document deleted"}
     )
 
 
 if __name__ == "__main__":
-    app.config.from_object(Settings())
-    app.config.es_client = ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
+    app.config.from_object(Settings(
+        client=ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
+    ))
     app.run(host="0.0.0.0", port=8000, debug=True)

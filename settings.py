@@ -1,11 +1,10 @@
-from os.path import join, dirname
+from os.path import dirname, join
 
 import dotenv
 
 
 class Settings:
-
-    def __init__(self, filename='.env'):
+    def __init__(self, client, filename='.env'):
         envpath = join(dirname(__file__), filename)
         dotenv.load_dotenv(envpath)
-        THING = 20
+        self.ES_CLIENT = client
