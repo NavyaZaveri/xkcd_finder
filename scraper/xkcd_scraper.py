@@ -6,18 +6,16 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
+nltk.download("stopwords")
+nltk.download("wordnet")
+
 import requests
 from models.xkcd import Xkcd
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 BASE_URL = "https://xkcd.com/{}/info.0.json"
-try:
-    STOPOWRDS = set(stopwords.words("english"))
-except LookupError:
-    nltk.download("stopwords")
-    STOPOWRDS = set(stopwords.words("english"))
+STOPOWRDS = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
 
