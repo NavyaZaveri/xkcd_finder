@@ -41,7 +41,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            pytest -v -q
+            pytest -v
 
 
 

@@ -4,6 +4,7 @@ import os
 def test_unauthorized_doc_insertion(server, xkcd_as_json):
     _, response = server.post("/insert", json=xkcd_as_json)
     assert response.status_code == 403
+    assert len(server.app.config.ES_CLIENT.search_all().results()) == 0
 
 
 def test_authorized_doc_insertion(server, mock_xkcd):
