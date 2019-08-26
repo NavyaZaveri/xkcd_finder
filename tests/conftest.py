@@ -4,8 +4,6 @@ import pytest
 
 from es_api.client import ElasticEngine
 from models.xkcd import Xkcd
-
-from sanic.testing import SanicTestClient
 from server.app import app
 
 

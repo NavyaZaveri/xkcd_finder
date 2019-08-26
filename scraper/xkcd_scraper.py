@@ -2,6 +2,7 @@ import logging
 import re
 from json import JSONDecodeError
 
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
@@ -12,7 +13,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://xkcd.com/{}/info.0.json"
-STOPOWRDS = set(stopwords.words("english"))
+try:
+    STOPOWRDS = set(stopwords.words("english"))
+except LookupError:
+    nltk.download("stopwords")
+    STOPOWRDS = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
 
