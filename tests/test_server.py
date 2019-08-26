@@ -28,3 +28,4 @@ def test_expected_json_format(server, mock_xkcd):
     assert response.status_code == 200
     assert "results" in response.json
     assert len(response.json["results"]) == 1
+    assert response.json["results"][0]["id"] == mock_xkcd.id
