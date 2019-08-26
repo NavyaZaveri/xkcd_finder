@@ -9,8 +9,6 @@ from settings import Settings
 from scraper.xkcd_scraper import cleanup
 
 app = Sanic()
-app.config.from_object(Settings())
-app.config.es_client = ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
 
 
 def check_request_for_authorization_status(request):
@@ -85,4 +83,6 @@ async def delete_document(request):
 
 
 if __name__ == "__main__":
+    app.config.from_object(Settings())
+    app.config.es_client = ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
     app.run(host="0.0.0.0", port=8000, debug=True)
