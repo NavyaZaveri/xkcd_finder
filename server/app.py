@@ -1,12 +1,11 @@
-import os
 from functools import wraps
+import os
 
 from sanic import Sanic
 from sanic.response import json
 
 from es_api.client import ElasticEngine
 from scraper.xkcd_scraper import cleanup
-from settings import Settings
 
 app = Sanic(__name__)
 
@@ -85,7 +84,6 @@ async def delete_document(request):
 
 
 if __name__ == "__main__":
-    app.config.from_object(Settings())
     app.register_listener(setup_es_client,
                           'before_server_start')
     app.run(host="0.0.0.0", port=8000, debug=True)
