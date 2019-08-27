@@ -5,7 +5,6 @@ import pytest
 from es_api.client import ElasticEngine
 from models.xkcd import Xkcd
 from server.app import app
-from settings import Settings
 
 
 @pytest.fixture
@@ -26,8 +25,6 @@ def client():
 
 @pytest.fixture
 def server(client):
-    app.config.from_object(Settings())
-
     @app.listener('before_server_start')
     async def setup_db(app, loop):
         app.es_client = client
