@@ -26,7 +26,12 @@ def client():
 
 @pytest.fixture
 def server(client):
-    app.config.from_object(Settings(client=client))
+    app.config.from_object(Settings())
+
+    @app.listener('before_server_start')
+    async def setup_db(app, loop):
+        app.es_client = client
+
     yield app.test_client
 
 
