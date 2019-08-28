@@ -37,7 +37,7 @@ def authorized():
 
 @app.route("/", methods=["GET"])
 async def home(request):
-    return json({"hello": "world"})
+    return json({"hello": "worldddd"})
 
 
 @app.route("/insert", methods=["POST"])
@@ -45,6 +45,7 @@ async def home(request):
 async def insert_comic(request):
     doc = request.json["doc"]
     app.es_client.insert(doc)
+    app.es_client.refresh()
     return json({"msg": "insertion successful"},
                 status=201)
 
@@ -73,6 +74,17 @@ async def display_all_docs(request):
     )
 
 
+@app.route("/size", methods=["GET"])
+async def display_size(request):
+    sz = app.es_client.index_size()
+    print(sz)
+    return json(
+        {
+            "size": str(sz)
+        }
+    )
+
+
 @app.route("/delete", methods=["POST"])
 @authorized()
 async def delete_document(request):
@@ -86,4 +98,4 @@ async def delete_document(request):
 if __name__ == "__main__":
     app.register_listener(setup_es_client,
                           'before_server_start')
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True, workers=10)

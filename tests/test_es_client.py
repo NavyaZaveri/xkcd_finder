@@ -35,5 +35,11 @@ def test_delete_by(client: ElasticEngine, mock_xkcd):
     assert len(client.search_all().results()) == 0
 
 
+def test_size(client: ElasticEngine, new_xkcd_by_content):
+    for _ in range(20):
+        client.insert(new_xkcd_by_content(), refresh=True)
+    assert len(client.search_all().results()) == 20
+
+
 def test_health_check(client: ElasticEngine):
     assert client.ping()

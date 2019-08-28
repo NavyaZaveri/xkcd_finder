@@ -16,11 +16,7 @@ class ElasticEngine:
         return getattr(self._index, attr)
 
     def update(self, old, new_doc, refresh=False):
-        """
-        :param new_doc: Model
-        :param refresh:
-        :type old: Model
-        """
+
         docs = [d for d in self.search_by(id=old.get_id()).results()]
 
         if len(docs) > 1:
@@ -31,8 +27,11 @@ class ElasticEngine:
         self.delete_document(old, refresh=refresh)
         self.insert(new_doc, refresh=refresh)
 
-    def search_all(self):
-        self._search = self._search.query("match_all")
+    def search_all(self, refresh=False, size=100):
+        self._search = self._search.query("match_all"). \
+            extra(from_=0, size=size)
+        if refresh:
+            self.refresh()
         return self
 
     def destroy_index(self, index, refresh=False):
@@ -117,3 +116,6 @@ class ElasticEngine:
     def get_random_doc(self):
         all_docs = [_ for _ in self.search_all().results()]
         return random.choice(all_docs)
+
+    def index_size(self):
+        return len(self.search_all(refresh=True, size=100000).results())

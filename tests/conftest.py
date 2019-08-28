@@ -35,3 +35,19 @@ def server(client):
 @pytest.fixture
 def xkcd_as_json(mock_xkcd):
     return json.dumps(mock_xkcd.to_dict())
+
+
+@pytest.fixture
+def new_xkcd_by_content():
+    content = 1
+
+    def inner():
+        nonlocal content
+        content += 1
+        return Xkcd(
+            content=str(content),
+            link="http://foobarr.com",
+            title="bar"
+        )
+
+    return inner
