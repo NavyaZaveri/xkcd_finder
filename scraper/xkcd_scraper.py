@@ -4,6 +4,8 @@ import logging
 import os
 from pathlib import Path
 import re
+import socket
+import time
 
 import aiohttp
 from dotenv import load_dotenv
@@ -17,7 +19,6 @@ load_dotenv(dotenv_path=env_path)
 
 nltk.download("stopwords")
 nltk.download("wordnet")
-from scraper.async_scheduler import schedule_request
 
 import requests
 from models.xkcd import Xkcd
@@ -25,6 +26,7 @@ from models.xkcd import Xkcd
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 BASE_URL = "https://xkcd.com/{}/info.0.json"
+insert_endpoint = "http://localhost:8000/insert"
 STOPOWRDS = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
@@ -44,46 +46,60 @@ def to_xkcd(xkcd_json):
     )
 
 
-class XkcdRequest:
-    def __init__(self, verbose=True):
-        self.insert_endpoint = "http://localhost:8000/insert"
-        self.scraper_url = "https://xkcd.com/{}/info.0.json"
-        self.verbose = verbose
-        self.retry_list = []
-        self.seen = set()
+from scraper.async_scheduler import AsyncScheduler
 
-    async def make_request(self, session, req_count):
+
+async def make_request(req_count, scheduler):
+    if req_count == 200:
+        return None
+    await scheduler.add_task(make_request, req_count=req_count + 1)
+    conn = aiohttp.TCPConnector(
+        family=socket.AF_INET,
+        verify_ssl=False,
+    )
+    async with aiohttp.ClientSession(connector=conn) as session:
         try:
-            await asyncio.sleep(0.5)
-            xkcd = await self.fetch(session, req_count)
-            await asyncio.sleep(0.5)
-            await self.insert_into_db(session, xkcd)
-            await asyncio.sleep(0.5)
-            lock = asyncio.Lock()
-            print("done")
-            async with lock:
-                self.seen.add(xkcd)
-        except aiohttp.client_exceptions.ContentTypeError as e:
+            url = BASE_URL.format(req_count)
+            xkcd = await fetch(session, url)
+            await insert_into_db(session, xkcd)
+            print(xkcd)
+            print("done!")
+        except Exception as e:
             print(e)
-        except aiohttp.client_exceptions.ClientOSError:
-            self.retry_list.append(req_count)
 
-    async def fetch(self, session, req_count):
-        print(self.scraper_url.format(req_count), req_count)
 
-        resp = await session.get(self.scraper_url.format(req_count))
-        json = await resp.json()
-        json["transcript"] = cleanup(json["transcript"])
-        xkcd = to_xkcd(json)
-        return xkcd
+async def fetch(session, url):
+    resp = await session.get(url)
+    json = await resp.json()
+    json["transcript"] = cleanup(json["transcript"])
+    xkcd = to_xkcd(json)
+    return xkcd
 
-    async def insert_into_db(self, session, xkcd):
-        await session.post(self.insert_endpoint, json={
-            "doc": xkcd.to_dict(),
-            "password": os.environ.get("PASSWORD")
-        })
+
+async def insert_into_db(session, xkcd):
+    await session.post(insert_endpoint, json={
+        "doc": xkcd.to_dict(),
+        "password": os.environ.get("PASSWORD")
+    })
 
 
 if __name__ == "__main__":
-    x = XkcdRequest()
-    schedule_request(x.make_request, 20)
+
+    t = time.time()
+    s = AsyncScheduler(wait=3)
+    s.set_initial_callback(make_request, req_count=1)
+    s.go()
+    print(time.time() - t)
+    print("--------------------")
+    t = time.time()
+    for i in range(1, 200):
+        xkcd = requests.get("https://xkcd.com/1/info.0.json")
+        json = xkcd.json()
+        json["transcript"] = cleanup(json["transcript"])
+        xkcd = to_xkcd(json)
+        resp = requests.post(insert_endpoint, json={
+            "doc": xkcd.to_dict(),
+            "password": os.environ.get("PASSWORD")
+        })
+        print(resp.status_code, i)
+    print(time.time() - t)
