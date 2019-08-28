@@ -45,7 +45,6 @@ async def home(request):
 async def insert_comic(request):
     doc = request.json["doc"]
     app.es_client.insert(doc)
-    app.es_client.refresh()
     return json({"msg": "insertion successful"},
                 status=201)
 

@@ -1,16 +1,15 @@
-from abc import ABC
 import asyncio
-import logging
-import re
 from json import JSONDecodeError
+import logging
 import os
+from pathlib import Path
+import re
 
+import aiohttp
 from dotenv import load_dotenv
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
-import aiohttp
-from pathlib import Path
 
 load_dotenv()
 env_path = Path('.') / '.env'
@@ -18,7 +17,7 @@ load_dotenv(dotenv_path=env_path)
 
 nltk.download("stopwords")
 nltk.download("wordnet")
-from scraper.async_scraper import  schedule_request
+from scraper.async_scheduler import schedule_request
 
 import requests
 from models.xkcd import Xkcd
@@ -35,20 +34,6 @@ def cleanup(text):
     words_without_stopwords = [w.lower() for w in words if w not in STOPOWRDS]
     lemmatized = [lemmatizer.lemmatize(w) for w in words_without_stopwords]
     return " ".join(lemmatized)
-
-
-def scrape(start, end):
-    for comic_index in range(start, end + 1):
-        url = BASE_URL.format(comic_index)
-        comic = requests.get(url)
-        try:
-            json = comic.json()
-            json["transcript"] = cleanup(json["transcript"])
-            yield to_xkcd(json)
-        except JSONDecodeError as e:
-            logging.info(
-                f"unable to scrape {url}: {e}"
-            )
 
 
 def to_xkcd(xkcd_json):
