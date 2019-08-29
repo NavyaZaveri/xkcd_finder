@@ -57,9 +57,3 @@ def new_xkcd_by_content():
 @pytest.fixture
 def async_scraper():
     return AsyncRequestScheduler(wait=2)
-
-
-@pytest.fixture
-def google_get():
-    async def inner():
-        pass

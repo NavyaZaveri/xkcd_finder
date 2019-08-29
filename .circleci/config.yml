@@ -33,6 +33,7 @@ jobs:
           command: |
             sudo pip install -r requirements.txt
 
+
       # run tests!
       # this example uses Django's built-in test-runner
       # other common Python testing frameworks include pytest and nose
