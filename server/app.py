@@ -5,7 +5,7 @@ from sanic import Sanic
 from sanic.response import json
 
 from es_api.client import ElasticEngine
-from scraper.xkcd_scraper import cleanup
+from utils import cleanup
 
 app = Sanic(__name__)
 

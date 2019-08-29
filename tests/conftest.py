@@ -5,7 +5,7 @@ import pytest
 from es_api.client import ElasticEngine
 from models.xkcd import Xkcd
 from server.app import app
-from scraper.async_scheduler import AsyncScheduler
+from scraper.async_scheduler import AsyncRequestScheduler
 
 
 @pytest.fixture
@@ -56,7 +56,7 @@ def new_xkcd_by_content():
 
 @pytest.fixture
 def async_scraper():
-    return AsyncScheduler(wait=2)
+    return AsyncRequestScheduler(wait=2)
 
 
 @pytest.fixture

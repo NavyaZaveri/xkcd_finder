@@ -2,6 +2,8 @@ import hashlib
 from abc import ABC, abstractmethod
 import attr
 
+import utils
+
 
 class Model(ABC):
 
@@ -33,3 +35,12 @@ class Xkcd(Model):
 
     def to_dict(self):
         return attr.asdict(self)
+
+    @classmethod
+    def from_json(cls, xkcd_json):
+        xkcd_json["transcript"] = utils.cleanup(xkcd_json["transcript"])
+        return cls(
+            content=xkcd_json["transcript"],
+            title=xkcd_json["title"],
+            link=xkcd_json["img"],
+        )

@@ -1,28 +1,31 @@
 from abc import ABC, abstractmethod
+import socket
+
+import aiohttp
 import asyncio
 
 
 class TaskHandler(ABC):
 
     @abstractmethod
-    def on_task_started(self, **kwargs):
+    async def on_task_started(self, **kwargs):
         pass
 
     @abstractmethod
-    def on_task_finished(self, **kwargs):
+    async def on_task_finished(self, **kwargs):
         pass
 
 
 class DefaultTaskHandler(TaskHandler):
 
-    def on_task_finished(self, **kwargs):
+    async def on_task_finished(self, **kwargs):
         pass
 
-    def on_task_started(self, **kwargs):
+    async def on_task_started(self, **kwargs):
         pass
 
 
-class AsyncScheduler:
+class AsyncRequestScheduler:
     def __init__(self, wait=2, task_handler=DefaultTaskHandler()):
         self.work = []
         self._completed = 0
@@ -35,8 +38,9 @@ class AsyncScheduler:
 
     async def add_task(self, callback, **kwargs):
         kwargs["scheduler"] = self
+        kwargs["session"] = self.session
         task = asyncio.create_task(callback(**kwargs))
-        self.task_handler.on_task_started(**kwargs)
+        await self.task_handler.on_task_started(**kwargs)
         async with asyncio.Lock():
             self.work.append((task, kwargs))
 
@@ -46,7 +50,7 @@ class AsyncScheduler:
                 task, kwargs = self.work.pop()
 
             await task
-            self.task_handler.on_task_finished(**kwargs)
+            await self.task_handler.on_task_finished(**kwargs)
 
             async with asyncio.Lock():
                 self._completed += 1
@@ -56,13 +60,26 @@ class AsyncScheduler:
 
     async def _setup(self, callback, **kwargs):
         kwargs["scheduler"] = self
+        kwargs["session"] = self.session
         task = asyncio.create_task(callback(**kwargs))
         self.work.append((task, kwargs))
         await self._run()
 
-    def go(self):
-        asyncio.run(self._setup(self.initial_callback, **self.initial_callback_kwargs))
+    async def go(self):
+        await self._setup(self.initial_callback, **self.initial_callback_kwargs)
 
     @property
     def completed(self):
         return self._completed
+
+    async def __aenter__(self):
+
+        connector = aiohttp.TCPConnector(
+            family=socket.AF_INET,
+            ssl=False,
+        )
+        self.session = aiohttp.ClientSession(connector=connector)
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.session.close()
