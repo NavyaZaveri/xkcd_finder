@@ -22,6 +22,7 @@ insert_endpoint = "http://localhost:8000/insert"
 async def make_request(req_count, scheduler, session):
     if req_count == 200:
         return None
+
     await scheduler.add_task(make_request, req_count=req_count + 1)
     url = BASE_URL.format(req_count)
     xkcd = await fetch(url, session)
