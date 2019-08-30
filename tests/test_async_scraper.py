@@ -7,28 +7,7 @@ import requests
 from scraper.async_scheduler import AsyncRequestScheduler
 
 
-async def sleep(completed, n, scheduler, **kwargs):
-    if completed >= n:
-        return None
-    await scheduler.add_task(sleep, completed=completed + 1, n=n)
-    await asyncio.sleep(0.0001)
-
-
-async def dummy_request_with_scheduler(req_number, n, scheduler, session):
-    if req_number >= n:
-        return None
-    await scheduler.add_task(dummy_request_with_scheduler, req_number=req_number + 1, n=n)
-    await session.get("https://www.google.com")
-
-
-@pytest.mark.asyncio
-async def test_async_scraper_with_dummy_async_activity():
-    async with AsyncRequestScheduler(wait=5) as a:
-        a.set_initial_callback(sleep, completed=1, n=5)
-        await a.go()
-    assert a.completed == 5
-
-
+######################### HELPER test functions ############################
 def time_it(fn):
     async def inner(**kwargs):
         t = time.time()
@@ -53,6 +32,30 @@ async def async_request(n):
 def sync_request(n):
     for i in range(n):
         requests.get("https://www.google.com")
+
+
+async def sleep(completed, n, scheduler, **kwargs):
+    if completed >= n:
+        return None
+    await scheduler.add_task(sleep, completed=completed + 1, n=n)
+    await asyncio.sleep(0.0001)
+
+
+async def dummy_request_with_scheduler(req_number, n, scheduler, session):
+    if req_number >= n:
+        return None
+    await scheduler.add_task(dummy_request_with_scheduler, req_number=req_number + 1, n=n)
+    await session.get("https://www.google.com")
+
+
+############################################################################################
+
+@pytest.mark.asyncio
+async def test_async_scraper_with_dummy_async_activity():
+    async with AsyncRequestScheduler(wait=5) as a:
+        a.set_initial_callback(sleep, completed=1, n=5)
+        await a.go()
+    assert a.completed == 5
 
 
 @pytest.mark.asyncio
