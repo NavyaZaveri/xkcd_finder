@@ -94,7 +94,18 @@ async def delete_document(request):
     )
 
 
+@app.route("/bulk-insert", methods=["POST"])
+@authorized()
+async def bulk_insert_docs(request):
+    docs = request.json["docs"]
+    success, failed = app.es_client.bulk_insert(docs)
+    return json({
+        "success": success,
+        "failed": failed
+    })
+
+
 if __name__ == "__main__":
     app.register_listener(setup_es_client,
                           'before_server_start')
-    app.run(host="0.0.0.0", port=8000, debug=True, workers=10)
+    app.run(host="0.0.0.0", port=8000, debug=False, workers=20)

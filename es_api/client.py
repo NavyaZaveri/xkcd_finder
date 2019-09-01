@@ -2,6 +2,7 @@ import random
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Index
 from bonsai import setup
+from elasticsearch import helpers
 
 
 class ElasticEngine:
@@ -27,7 +28,7 @@ class ElasticEngine:
         self.delete_document(old, refresh=refresh)
         self.insert(new_doc, refresh=refresh)
 
-    def search_all(self, refresh=False, size=100):
+    def search_all(self, refresh=False, size=10000):
         self._search = self._search.query("match_all"). \
             extra(from_=0, size=size)
         if refresh:
@@ -80,6 +81,14 @@ class ElasticEngine:
             if refresh:
                 self.refresh()
 
+    def bulk_insert(self, docs, **kwargs):
+        refresh = kwargs.pop("refresh", False)
+        docs = [self._make_doc_bulk_indexable(doc) if hasattr(doc, "to_dict") else doc for doc in docs]
+        success, failed = helpers.bulk(self._client, docs, stats_only=True)
+        if refresh:
+            self.refresh()
+        return success, failed
+
     def lazy_results(self):
         try:
             for match in self._search.execute():
@@ -119,3 +128,10 @@ class ElasticEngine:
 
     def index_size(self):
         return len(self.search_all(refresh=True, size=100000).results())
+
+    def _make_doc_bulk_indexable(self, doc):
+        return {
+            "_index": self.index_name,
+            "_id": doc["id"],
+            "_source": doc
+        }
