@@ -1,5 +1,3 @@
-import datetime
-
 from es_api.client import ElasticEngine
 
 
@@ -53,7 +51,6 @@ def test_bulk_indexing(client: ElasticEngine, new_xkcd_by_content):
         for j in range(0, 20)
     )
     client.bulk_insert(actions, refresh=True)
-    print(client.search_all().results())
     assert len(client.search_all().results()) == 20
 
 

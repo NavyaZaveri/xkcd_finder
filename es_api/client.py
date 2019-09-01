@@ -84,7 +84,6 @@ class ElasticEngine:
     def bulk_insert(self, docs, **kwargs):
         refresh = kwargs.pop("refresh", False)
         docs = [self._make_doc_bulk_indexable(doc) for doc in docs]
-        print(docs)
         success, failed = helpers.bulk(self._client, docs, stats_only=True)
         if refresh:
             self.refresh()

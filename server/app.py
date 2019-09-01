@@ -76,12 +76,7 @@ async def display_all_docs(request):
 @app.route("/size", methods=["GET"])
 async def display_size(request):
     sz = app.es_client.index_size()
-    print(sz)
-    return json(
-        {
-            "size": str(sz)
-        }
-    )
+    return json({"size": str(sz)})
 
 
 @app.route("/delete", methods=["POST"])
