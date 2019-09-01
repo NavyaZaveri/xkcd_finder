@@ -59,7 +59,7 @@ async def test_async_scraper_with_dummy_async_activity():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("n", range(20, 100, 25))
+@pytest.mark.parametrize("n", range(50, 101, 25))
 @pytest.mark.slow
 async def test_async_scraper_faster_than_synchronous_scraper(n):
     async_time = await async_request(n=n)

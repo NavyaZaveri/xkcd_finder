@@ -130,8 +130,10 @@ class ElasticEngine:
         return len(self.search_all(refresh=True, size=100000).results())
 
     def _make_doc_bulk_indexable(self, doc):
+        if hasattr(doc, "to_dict"):
+            doc = doc.to_dict()
         return {
             "_index": self.index_name,
             "_id": doc["id"],
-            "_source": doc.to_dict() if hasattr(doc, "to_dict") else doc
+            "_source": doc
         }

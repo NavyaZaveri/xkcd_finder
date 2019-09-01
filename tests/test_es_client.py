@@ -42,15 +42,11 @@ def test_size(client: ElasticEngine, new_xkcd_by_content):
 
 
 def test_bulk_indexing(client: ElasticEngine, new_xkcd_by_content):
-    actions = (
-        {
-            "_index": client.index_name,
-            "_id": j,
-            "_source": new_xkcd_by_content().to_dict()
-        }
-        for j in range(0, 20)
+    content = (
+        new_xkcd_by_content().to_dict()
+        for _ in range(20)
     )
-    client.bulk_insert(actions, refresh=True)
+    client.bulk_insert(content, refresh=True)
     assert len(client.search_all().results()) == 20
 
 
