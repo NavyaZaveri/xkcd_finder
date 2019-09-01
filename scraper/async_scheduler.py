@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+import json
 import socket
+import time
 
 import aiohttp
 import asyncio
@@ -14,6 +16,32 @@ class TaskHandler(ABC):
     @abstractmethod
     async def on_task_finished(self, **kwargs):
         pass
+
+    def hash_key(self, key):
+        key.pop("session", None)
+        key.pop("scheduler", None)
+        return json.dumps(key, sort_keys=True)
+
+
+class Timer(TaskHandler):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.start_time = {}
+        self.request_duration = {}
+
+    async def on_task_finished(self, **kwargs):
+        self.request_duration[self.hash_key(kwargs)] = time.time() - self.start_time[self.hash_key(kwargs)]
+
+    async def on_task_started(self, **kwargs):
+        self.start_time[self.hash_key(kwargs)] = time.time()
+
+    def total_taken_for_all_requests(self):
+        return max(self.request_duration.values())
+
+    def time_for_each_request(self):
+        for (req, time) in self.request_duration.items():
+            yield (req, time)
 
 
 class DefaultTaskHandler(TaskHandler):
@@ -62,6 +90,7 @@ class AsyncRequestScheduler:
         kwargs["scheduler"] = self
         kwargs["session"] = self.session
         task = asyncio.create_task(callback(**kwargs))
+        await self.task_handler.on_task_started(**kwargs)
         self.work.append((task, kwargs))
         await self._run()
 

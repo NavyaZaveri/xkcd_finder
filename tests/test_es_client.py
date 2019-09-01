@@ -1,3 +1,5 @@
+import datetime
+
 from es_api.client import ElasticEngine
 
 
@@ -38,6 +40,20 @@ def test_delete_by(client: ElasticEngine, mock_xkcd):
 def test_size(client: ElasticEngine, new_xkcd_by_content):
     for _ in range(20):
         client.insert(new_xkcd_by_content(), refresh=True)
+    assert len(client.search_all().results()) == 20
+
+
+def test_bulk_indexing(client: ElasticEngine, new_xkcd_by_content):
+    actions = (
+        {
+            "_index": client.index_name,
+            "_id": j,
+            "_source": new_xkcd_by_content().to_dict()
+        }
+        for j in range(0, 20)
+    )
+    client.bulk_insert(actions, refresh=True)
+    print(client.search_all().results())
     assert len(client.search_all().results()) == 20
 
 
