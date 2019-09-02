@@ -5,7 +5,6 @@ from sanic import Sanic
 from sanic.response import json
 
 from es_api.client import ElasticEngine
-from utils import cleanup
 
 app = Sanic(__name__)
 
@@ -52,6 +51,7 @@ async def insert_comic(request):
 
 @app.route("/search", methods=["GET"])
 async def search_comic(request):
+    from utils import cleanup
     query = request.args.get("query")
     clean_query = cleanup(query)
     results = app.es_client.search_by(content=clean_query).results()
