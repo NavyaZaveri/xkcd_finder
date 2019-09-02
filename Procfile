@@ -1,1 +1,1 @@
-web: gunicorn server.app:app --worker-class sanic.worker.GunicornWorker
+uvicorn server.app:app

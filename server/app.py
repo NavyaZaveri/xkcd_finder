@@ -10,6 +10,7 @@ from utils import cleanup
 app = Sanic(__name__)
 
 
+@app.listener('before_server_start')
 async def setup_es_client(app, loop):
     app.es_client = ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
 
@@ -101,6 +102,4 @@ async def bulk_insert_docs(request):
 
 
 if __name__ == "__main__":
-    app.register_listener(setup_es_client,
-                          'after_server_start')
     app.run(host="0.0.0.0", port=8000, debug=True, workers=20)
