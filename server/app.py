@@ -102,5 +102,5 @@ async def bulk_insert_docs(request):
 
 if __name__ == "__main__":
     app.register_listener(setup_es_client,
-                          'before_server_start')
+                          'after_server_start')
     app.run(host="0.0.0.0", port=8000, debug=True, workers=20)
