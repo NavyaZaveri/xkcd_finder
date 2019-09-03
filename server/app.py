@@ -24,12 +24,12 @@ def validate_request(attr, keys):
         @wraps(f)
         async def decorated_function(request, *args, **kwargs):
             if hasattr(request, attr):
-                x = getattr(request, attr)
-                if all(key in x for key in keys):
+                request_attr = getattr(request, attr)
+                if all(key in request_attr for key in keys):
                     response = await f(request, *args, **kwargs)
                     return response
                 else:
-                    missing_keys = [key for key in keys if key not in x]
+                    missing_keys = [key for key in keys if key not in request_attr]
                     return json(
                         {f"{attr} in request missing params: {missing_keys}"},
                         400
