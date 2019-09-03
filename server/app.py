@@ -34,7 +34,6 @@ def validate_request(attr, keys):
                         {f"{attr} in request missing params: {missing_keys}"},
                         400
                     )
-
             else:
                 raise Exception(f"request has no attribute {attr}")
 

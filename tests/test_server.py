@@ -17,7 +17,7 @@ def test_authorized_doc_insertion(server, mock_xkcd):
     assert response.status_code == 201
 
 
-def test_handle_invalid_request(server,):
+def test_handle_invalid_request(server):
     _, response = server.get("/search", json={
         "wrong_parameter": "foo"
     })
