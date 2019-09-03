@@ -17,6 +17,13 @@ def test_authorized_doc_insertion(server, mock_xkcd):
     assert response.status_code == 201
 
 
+def test_handle_invalid_request(server,):
+    _, response = server.get("/search", json={
+        "wrong_parameter": "foo"
+    })
+    assert response.status_code == 400
+
+
 def test_end_to_end_flow(server, mock_xkcd):
     _, response = server.post("/insert", json={
         "doc": mock_xkcd.to_dict(),

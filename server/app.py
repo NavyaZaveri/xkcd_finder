@@ -19,6 +19,30 @@ def check_request_for_authorization_status(request):
            and request.json["password"] == os.environ.get("PASSWORD")
 
 
+def validate_request(attr, keys):
+    def inner(f):
+        @wraps(f)
+        async def decorated_function(request, *args, **kwargs):
+            if hasattr(request, attr):
+                x = getattr(request, attr)
+                if all(key in x for key in keys):
+                    response = await f(request, *args, **kwargs)
+                    return response
+                else:
+                    missing_keys = [key for key in keys if key not in x]
+                    return json(
+                        {f"{attr} in request missing params: {missing_keys}"},
+                        400
+                    )
+
+            else:
+                raise Exception(f"request has no attribute {attr}")
+
+        return decorated_function
+
+    return inner
+
+
 def authorized():
     def decorator(f):
         @wraps(f)
@@ -42,6 +66,7 @@ async def home(request):
 
 @app.route("/insert", methods=["POST"])
 @authorized()
+@validate_request(attr="json", keys=["doc"])
 async def insert_comic(request):
     doc = request.json["doc"]
     app.es_client.insert(doc)
@@ -50,6 +75,7 @@ async def insert_comic(request):
 
 
 @app.route("/search", methods=["GET"])
+@validate_request(attr="args", keys=["query"])
 async def search_comic(request):
     query = request.args.get("query")
     clean_query = cleanup(query)
@@ -81,6 +107,7 @@ async def display_size(request):
 
 @app.route("/delete", methods=["POST"])
 @authorized()
+@validate_request(attr="json", keys=["doc"])
 async def delete_document(request):
     doc_to_delete = request.json["doc"]
     app.es_client.delete_document_by(id=doc_to_delete["id"])
@@ -91,6 +118,7 @@ async def delete_document(request):
 
 @app.route("/bulk-insert", methods=["POST"])
 @authorized()
+@validate_request(attr="json", keys=["docs"])
 async def bulk_insert_docs(request):
     docs = request.json["docs"]
     success, failed = app.es_client.bulk_insert(docs)
