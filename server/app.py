@@ -5,11 +5,11 @@ from sanic import Sanic
 from sanic.response import json
 
 from es_api.client import ElasticEngine
+from utils import cleanup
 
 app = Sanic(__name__)
 
 
-@app.listener('before_server_start')
 async def setup_es_client(app, loop):
     app.es_client = ElasticEngine.from_bonsai("xkcd_production", test_instance=False)
 
@@ -37,7 +37,7 @@ def authorized():
 
 @app.route("/", methods=["GET"])
 async def home(request):
-    return json({"hello": "worldddd"})
+    return json({"hello": "world"})
 
 
 @app.route("/insert", methods=["POST"])
@@ -51,7 +51,6 @@ async def insert_comic(request):
 
 @app.route("/search", methods=["GET"])
 async def search_comic(request):
-    from utils import cleanup
     query = request.args.get("query")
     clean_query = cleanup(query)
     results = app.es_client.search_by(content=clean_query).results()
@@ -102,4 +101,5 @@ async def bulk_insert_docs(request):
 
 
 if __name__ == "__main__":
+    app.register_listener(setup_es_client, "before_server_start")
     app.run(host="0.0.0.0", port=8000, debug=True, workers=20)
