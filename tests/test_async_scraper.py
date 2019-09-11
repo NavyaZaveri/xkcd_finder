@@ -30,8 +30,9 @@ async def async_request(n):
 
 @time_it
 def sync_request(n):
+    session = requests.session()
     for i in range(n):
-        requests.get("https://www.google.com")
+        session.get("https://www.google.com")
 
 
 async def sleep(completed, n, scheduler, **kwargs):
