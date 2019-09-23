@@ -3,4 +3,3 @@
 An android app that allows you to search for your favorite xkcd comic.
 
 
-TODO: recommend comics based on history
